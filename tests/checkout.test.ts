@@ -18,7 +18,7 @@ vi.mock("@/lib/printful", async (orig) => ({
   },
 }));
 
-const { createCheckoutSession } = await import("@/lib/checkout");
+const { createCheckoutSession, returnOrigin } = await import("@/lib/checkout");
 const { printful } = await import("@/lib/printful");
 
 const address = { name: "Pat", email: "pat@example.com", address1: "1 Main St", city: "Denver", state: "CO", zip: "80202", country: "US" };
@@ -66,5 +66,18 @@ describe("createCheckoutSession", () => {
       createCheckoutSession(stripe as unknown as Stripe, { items: [{ variantId: 1, quantity: 1 }], address, shippingMethod: "STANDARD" }),
     ).rejects.toThrow();
     expect(stripe.customers.create).not.toHaveBeenCalled();
+  });
+});
+
+describe("returnOrigin", () => {
+  it("allows only the site, this project's Vercel URLs and localhost", () => {
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://scottsbakeshop.com");
+    expect(returnOrigin("https://scottsbakeshop.com")).toBe("https://scottsbakeshop.com");
+    expect(returnOrigin("https://scottsbakeshop.vercel.app")).toBe("https://scottsbakeshop.vercel.app");
+    expect(returnOrigin("https://scottsbakeshop-git-main-haveanapp.vercel.app")).toBe("https://scottsbakeshop-git-main-haveanapp.vercel.app");
+    expect(returnOrigin("http://localhost:3000")).toBe("http://localhost:3000");
+    expect(returnOrigin("https://evil.example")).toBe("https://scottsbakeshop.com");
+    expect(returnOrigin("https://evil.vercel.app")).toBe("https://scottsbakeshop.com");
+    expect(returnOrigin(undefined)).toBe("https://scottsbakeshop.com");
   });
 });

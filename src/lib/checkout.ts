@@ -10,6 +10,22 @@ export interface CheckoutInput {
   items: CartLine[];
   address: ShippingAddress;
   shippingMethod: string;
+  /** Origin the shopper is on; Stripe returns them here after paying. */
+  origin?: string;
+}
+
+/**
+ * Only trusted origins may be used for the post-payment redirect: the site
+ * itself, this project's Vercel URLs (before/alongside the custom domain),
+ * and localhost for development.
+ */
+export function returnOrigin(origin: string | undefined): string {
+  const site = env.siteUrl().replace(/\/$/, "");
+  if (!origin) return site;
+  if (origin === site) return origin;
+  if (/^https:\/\/scottsbakeshop(-[a-z0-9-]+)?\.vercel\.app$/.test(origin)) return origin;
+  if (/^http:\/\/localhost(:\d+)?$/.test(origin)) return origin;
+  return site;
 }
 
 /**
@@ -94,7 +110,7 @@ export async function createCheckoutSession(stripe: Stripe, input: CheckoutInput
       metadata: { items, shipping_method: rate.id },
     },
     metadata: { items, shipping_method: rate.id },
-    return_url: `${env.siteUrl()}/checkout/complete?session_id={CHECKOUT_SESSION_ID}`,
+    return_url: `${returnOrigin(input.origin)}/checkout/complete?session_id={CHECKOUT_SESSION_ID}`,
   });
 
   if (!session.client_secret) throw new Error("Stripe did not return a client secret");

@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   if (!stripe) return json({ error: "Checkout isn't open yet. Please check back soon." }, 503);
   try {
     const input = checkoutRequestSchema.parse(await req.json());
-    return json(await createCheckoutSession(stripe, input));
+    return json(await createCheckoutSession(stripe, { ...input, origin: new URL(req.url).origin }));
   } catch (err) {
     return errorResponse(err, "checkout");
   }
