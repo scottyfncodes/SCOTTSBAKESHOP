@@ -42,7 +42,7 @@ export function ProductBuy({ product }: { product: Product }) {
   return (
     <div className="product">
       <div className="product-media">
-        {image && <img src={image} alt={[product.name, color].filter(Boolean).join(" — ")} width={900} height={900} />}
+        {image && <img src={image} alt={[product.name, color].filter(Boolean).join(", ")} width={900} height={900} />}
       </div>
 
       <div>

@@ -15,7 +15,7 @@
   --gutter: 16px;
   --max: 1120px;
   --font-display: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-body: var(--font-outfit), ui-sans-serif, system-ui, -apple-system, sans-serif;
   color-scheme: light;
 }
 
@@ -45,9 +45,7 @@ button, input, select { font: inherit; color: inherit; }
 /* ---------- Header ---------- */
 .site-header {
   position: sticky; top: 0; z-index: 40;
-  background: color-mix(in srgb, var(--cream) 92%, transparent);
-  backdrop-filter: saturate(1.2) blur(8px);
-  -webkit-backdrop-filter: saturate(1.2) blur(8px);
+  background: var(--cream);
   border-bottom: 1px solid transparent;
 }
 .site-header.scrolled { border-bottom-color: var(--line); }

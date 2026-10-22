@@ -11,7 +11,7 @@ export default async function Home() {
     <>
       <section className="hero">
         <div className="container">
-          <img className="hero-logo" src="/logo.png" alt="Scott's Bake Shop — hand made" width={132} height={132} />
+          <img className="hero-logo" src="/logo.png" alt="Scott's Bake Shop, hand made" width={132} height={132} />
           <h1>Let&rsquo;s get this bread</h1>
           <p>Scott&rsquo;s Bake Shop merch, printed to order and shipped to your door.</p>
           <a href="#shop" className="btn btn-primary">Shop the merch</a>
