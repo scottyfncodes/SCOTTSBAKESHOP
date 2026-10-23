@@ -4,6 +4,7 @@ import { CartProvider } from "@/components/CartProvider";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import "./globals.css";
+import Script from "next/script";
 
 // One family, the same rounded geometric Outfit as the logo-style headings, keeps the shop feeling like one brand.
 const outfit = Outfit({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-outfit" });
@@ -28,6 +29,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main id="main">{children}</main>
           <Footer />
         </CartProvider>
+        {/* HaveAnApp Pulse: anonymous, cookieless usage counts. */}
+        <Script src="https://haveanapp-pulse-collect.vercel.app/p.js" data-app="scottsbakeshop" strategy="afterInteractive" />
       </body>
     </html>
   );
