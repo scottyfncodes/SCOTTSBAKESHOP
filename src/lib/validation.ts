@@ -24,7 +24,7 @@ const optionalText = (max: number) =>
 
 export const addressSchema = z.object({
   name: text(100),
-  email: z.string().trim().email().max(200),
+  email: z.string().trim().max(200).pipe(z.email()),
   address1: text(200),
   address2: optionalText(200),
   city: text(100),
