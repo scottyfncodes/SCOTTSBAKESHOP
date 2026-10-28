@@ -32,8 +32,12 @@ Paid orders arrive in Printful as **drafts** unless `PRINTFUL_AUTO_CONFIRM=true`
    for `checkout.session.completed` and `checkout.session.async_payment_succeeded`;
    put its signing secret in `STRIPE_WEBHOOK_SECRET`.
 4. `npm run printful:webhook` registers the Printful shipping-update webhook.
-5. Set the same variables in Vercel (Production + Preview) and redeploy.
-   `NEXT_PUBLIC_*` values are baked in at build time.
+5. Set the variables in Vercel and redeploy. `NEXT_PUBLIC_*` values are baked
+   in at build time.
+   - **Production:** live Stripe keys, the Printful token and webhook secrets.
+   - **Preview:** Stripe **test** keys only (`sk_test_`/`pk_test_` and a test
+     webhook secret), and leave `PRINTFUL_API_TOKEN` unset, so a branch
+     preview can never take a real payment or create a real Printful order.
 
 ## Checks
 
