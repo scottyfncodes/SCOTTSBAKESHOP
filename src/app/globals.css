@@ -280,7 +280,7 @@ h1, h2, h3, .brand-name, .footer-wordmark {
   flex: 0 0 100%; scroll-snap-align: start; scroll-snap-stop: always; padding: 0; border: 0; background: transparent;
   cursor: zoom-in; display: block;
 }
-.pdp-slide img { width: 100%; height: 100%; object-fit: cover; }
+.pdp-slide img { width: 100%; height: 100%; object-fit: contain; }
 .pdp-slide:focus-visible { outline: 3px solid var(--ink); outline-offset: -3px; }
 .pdp-count {
   position: absolute; right: 12px; bottom: 12px; margin: 0; padding: 4px 10px; border-radius: 999px;
