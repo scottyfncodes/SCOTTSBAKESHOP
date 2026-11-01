@@ -12,7 +12,7 @@ export interface Variant {
   price: number;
   currency: string;
   image: string | null;
-  /** Every distinct picture Printful has for this variant: mockups first, then print-file previews. */
+  /** Every distinct product mockup Printful has for this variant. */
   images: string[];
   available: boolean;
 }
@@ -25,8 +25,10 @@ export interface Product {
   image: string | null;
   /** Product thumbnail plus every distinct variant picture, for the product page gallery. */
   images: string[];
-  /** Our own photos for this product (public/products), shown after the main mockup. */
+  /** Our own photos for this product (public/products). */
   photos: string[];
+  /** True when photos[0] is the main picture instead of the Printful mockup. */
+  photosLead: boolean;
   currency: string;
   colors: { name: string; code: string | null }[];
   sizes: string[];

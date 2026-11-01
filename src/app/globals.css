@@ -131,6 +131,32 @@ button, input, select { font: inherit; color: inherit; }
 @media (min-width: 860px) { .product { grid-template-columns: 1.1fr 1fr; gap: 48px; padding: 40px 0 72px; align-items: start; } }
 .product-media { background: #fff; border: 2px solid var(--ink); border-radius: var(--radius); aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .product-media img { width: 100%; height: 100%; object-fit: contain; padding: 4%; }
+button.product-media { width: 100%; padding: 0; cursor: zoom-in; font: inherit; color: inherit; }
+button.product-media:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+.lightbox {
+  width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0;
+  border: 0; background: #fff; color: var(--ink); overflow: hidden;
+}
+.lightbox::backdrop { background: rgba(29, 28, 25, 0.85); }
+.lightbox-img {
+  position: absolute; inset: 0; margin: auto; max-width: 100%; max-height: 100%;
+  width: 100%; height: 100%; object-fit: contain; padding: 56px 12px; touch-action: pan-y;
+}
+.lightbox-btn {
+  position: absolute; width: 48px; height: 48px; border-radius: 999px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--paper); color: var(--ink); border: 2px solid var(--ink);
+}
+.lightbox-btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.lightbox-close { top: max(12px, env(safe-area-inset-top)); right: 12px; }
+.lightbox-prev, .lightbox-next { top: 50%; transform: translateY(-50%); }
+.lightbox-prev { left: 12px; }
+.lightbox-next { right: 12px; }
+.lightbox-count {
+  position: absolute; left: 0; right: 0; bottom: max(14px, env(safe-area-inset-bottom));
+  margin: 0; text-align: center; font-weight: 600; color: var(--ink-soft);
+}
 @media (min-width: 860px) { .product-gallery { position: sticky; top: 92px; } }
 .product-gallery { display: grid; gap: 10px; min-width: 0; }
 .thumbs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
