@@ -107,19 +107,16 @@ button, input, select { font: inherit; color: inherit; }
 /* ---------- Hero ---------- */
 .hero { padding: 16px 0 26px; text-align: center; }
 .hero-grid { display: grid; gap: 32px; align-items: center; }
-.hero-logo { width: 68px; height: 68px; margin: 0 auto 12px; }
 .eyebrow { margin: 0 0 10px; color: var(--blue-deep); }
-.hero h1 {
-  font-family: var(--font-display); font-weight: 400;
-  font-size: clamp(2.6rem, 11.5vw, 4.8rem); line-height: 0.98; letter-spacing: -0.02em; margin: 0 0 12px;
-}
+.hero-lettering { margin: 4px auto 14px; width: min(48vw, 188px); line-height: 0; }
+.hero-lettering img { width: 100%; height: auto; }
 .hero-sub { max-width: 32ch; margin: 0 auto 20px; font-size: 1.05rem; color: var(--ink-soft); }
 .hero .btn { min-width: 220px; }
 .hero-feature { display: none; }
 @media (min-width: 900px) {
   .hero { padding: 40px 0 56px; text-align: left; }
   .hero-grid { grid-template-columns: 1fr 1fr; gap: 56px; }
-  .hero-logo { width: 96px; height: 96px; margin: 0 0 22px; }
+  .hero-lettering { width: 300px; margin: 6px 0 22px; }
   .hero-sub { margin: 0 0 28px; font-size: 1.15rem; }
   .hero-feature { display: block; text-decoration: none; }
   .hero-feature-media { display: block; aspect-ratio: 4 / 5; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
