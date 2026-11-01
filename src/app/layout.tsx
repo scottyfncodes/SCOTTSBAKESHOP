@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://scottsbakeshop.com"),
   title: { default: "Scott's Bake Shop Merch", template: "%s · Scott's Bake Shop" },
   description: "Let's get this bread. Hats, tees and hoodies from Scott's Bake Shop, made to order.",
-  icons: { icon: "/logo.png", apple: "/logo.png" },
+  icons: { icon: "/logo.png", apple: "/apple-touch-icon.png" },
   openGraph: { siteName: "Scott's Bake Shop", images: ["/logo.png"] },
 };
 
