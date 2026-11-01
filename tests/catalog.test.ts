@@ -122,3 +122,34 @@ describe("sortForShelf", () => {
     ]);
   });
 });
+
+describe("loadProduct", () => {
+  it("skips a product Printful no longer has (404) instead of failing the shop", async () => {
+    const { loadProduct } = await import("@/lib/catalog");
+    const { PrintfulError } = await import("@/lib/printful");
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const client = {
+      getStoreProduct: vi.fn().mockRejectedValue(new PrintfulError("Printful 404: Not Found (GET /store/products/1)", 404)),
+      getCatalogProduct: vi.fn(),
+    };
+    await expect(loadProduct("1", false, client)).resolves.toBeNull();
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
+  });
+
+  it("still fails on other Printful errors", async () => {
+    const { loadProduct } = await import("@/lib/catalog");
+    const { PrintfulError } = await import("@/lib/printful");
+    const client = {
+      getStoreProduct: vi.fn().mockRejectedValue(new PrintfulError("Printful 500: down", 500)),
+      getCatalogProduct: vi.fn(),
+    };
+    await expect(loadProduct("1", false, client)).rejects.toThrow("500");
+  });
+
+  it("loads a product that exists", async () => {
+    const { loadProduct } = await import("@/lib/catalog");
+    const client = { getStoreProduct: vi.fn().mockResolvedValue(teeSync), getCatalogProduct: vi.fn().mockResolvedValue(teeCatalog) };
+    expect((await loadProduct("1001", false, client))?.id).toBe(1001);
+  });
+});

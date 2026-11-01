@@ -54,7 +54,7 @@ export async function printfulFetch<T>(path: string, opts: FetchOpts = {}): Prom
   if (!res.ok) {
     const msg =
       json?.error?.message ?? (typeof json?.result === "string" ? json.result : res.statusText);
-    throw new PrintfulError(`Printful ${res.status}: ${msg}`, res.status);
+    throw new PrintfulError(`Printful ${res.status}: ${msg} (${opts.method ?? "GET"} ${path.split("?")[0]})`, res.status);
   }
   return json?.result as T;
 }

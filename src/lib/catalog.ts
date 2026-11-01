@@ -4,6 +4,7 @@ import { sortForShelf } from "./display-order";
 import { extraPhotosFor } from "./extra-photos";
 import {
   printful,
+  PrintfulError,
   PrintfulNotConfigured,
   type PfCatalogProduct,
   type PrintfulClient,
@@ -110,12 +111,27 @@ export function normalizeProduct(sync: PfSyncProduct, catalog: PfCatalogProduct 
   };
 }
 
-async function loadProduct(id: string, revalidate: number | false): Promise<Product | null> {
-  const sync = await printful.getStoreProduct(id, revalidate);
+export async function loadProduct(
+  id: string,
+  revalidate: number | false,
+  client: Pick<PrintfulClient, "getStoreProduct" | "getCatalogProduct"> = printful,
+): Promise<Product | null> {
+  let sync: PfSyncProduct;
+  try {
+    sync = await client.getStoreProduct(id, revalidate);
+  } catch (err) {
+    // A product deleted or re-published in Printful (new ID) answers 404.
+    // Skip it so the rest of the shop keeps selling.
+    if (err instanceof PrintfulError && err.status === 404) {
+      console.warn(`[catalog] skipping Printful product ${id}: ${err.message}`);
+      return null;
+    }
+    throw err;
+  }
   if (sync.sync_product.is_ignored) return null;
   const catalogId = sync.sync_variants[0]?.product?.product_id;
   const catalog = catalogId
-    ? await printful.getCatalogProduct(catalogId, revalidate).catch(() => null)
+    ? await client.getCatalogProduct(catalogId, revalidate).catch(() => null)
     : null;
   return normalizeProduct(sync, catalog);
 }
