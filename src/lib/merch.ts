@@ -35,8 +35,8 @@ export const DESIGNS: Design[] = [
   {
     slug: "lets-get-this-bread",
     name: "Let’s Get This Bread",
-    detail: "/products/mug-print.jpg",
-    detailKind: "photo",
+    detail: "/products/lets-get-this-bread-art.jpg",
+    detailKind: "art",
     note: "The house slogan in wobbly saloon lettering. Good on a hat, better on a Monday morning.",
     artist: { handle: "kurt_player02", url: "https://www.instagram.com/kurt_player02/" },
   },
