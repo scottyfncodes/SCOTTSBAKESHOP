@@ -29,7 +29,7 @@ export const DESIGNS: Design[] = [
     name: "Gluten for Punishment",
     detail: "/products/gluten-for-punishment-art.jpg",
     detailKind: "art",
-    note: "A skeleton hauling a loaf the size of a boulder, drawn like an old woodcut. Printed big across the back.",
+    note: "An original Scott\u2019s idea, handed to an incredible artist to draw. A skeleton shoulders a loaf the size of a boulder, rendered in dense, woodcut-style line work. Sisyphus, but make it sourdough.",
     artist: { handle: "turdrodeo", url: "https://www.instagram.com/turdrodeo/" },
   },
   {
@@ -37,7 +37,7 @@ export const DESIGNS: Design[] = [
     name: "Let’s Get This Bread",
     detail: "/products/lets-get-this-bread-art.jpg",
     detailKind: "art",
-    note: "The house slogan in wobbly saloon lettering. Good on a hat, better on a Monday morning.",
+    note: "Everybody knows the phrase. This is Kurt\u2019s take on it, set in a font he made by hand: warm, wobbly letters with a little saloon swagger.",
     artist: { handle: "kurt_player02", url: "https://www.instagram.com/kurt_player02/" },
   },
 ];
@@ -55,16 +55,34 @@ interface Rule {
 }
 
 const RULES: Rule[] = [
-  { match: /hoodie|sweatshirt/i, kind: "Hoodie", category: "Apparel", designs: ["gluten-for-punishment"] },
-  { match: /t-?shirt|\btee\b/i, kind: "Tee", category: "Apparel", designs: ["gluten-for-punishment"] },
-  { match: /\bhat\b|\bcap\b/i, kind: "Dad Hat", category: "Headwear", designs: ["lets-get-this-bread"] },
+  {
+    match: /hoodie|sweatshirt/i,
+    kind: "Hoodie",
+    category: "Apparel",
+    designs: ["gluten-for-punishment"],
+    note: "The full Gluten for Punishment piece, printed large across the back so every line of the woodcut detail comes through. A soft hoodie with a front pouch pocket. It runs small, so size up.",
+  },
+  {
+    match: /t-?shirt|\btee\b/i,
+    kind: "Tee",
+    category: "Apparel",
+    designs: ["gluten-for-punishment"],
+    note: "Gluten for Punishment, printed big across the back of a soft, lightweight black tee. Scott\u2019s idea, an artist\u2019s hand, and a skeleton who really commits to the bit.",
+  },
+  {
+    match: /\bhat\b|\bcap\b/i,
+    kind: "Dad Hat",
+    category: "Headwear",
+    designs: ["lets-get-this-bread"],
+    note: "Kurt\u2019s hand-made Let\u2019s Get This Bread lettering across the front of a classic dad hat. Adjustable strap in the back, ready for the early shift.",
+  },
   {
     match: /\bmug\b/i,
     kind: "Mug",
     category: "Accessories",
     designs: ["lets-get-this-bread", "gluten-for-punishment"],
     title: "Two-Sided Bake Shop Mug",
-    note: "Let\u2019s Get This Bread on one side, Gluten for Punishment on the other. Black glossy ceramic.",
+    note: "Two sides, two artists. Kurt\u2019s hand-lettered Let\u2019s Get This Bread on one side, the Gluten for Punishment skeleton on the other. A 15 oz black glossy mug for the first cup of the day.",
   },
 ];
 
