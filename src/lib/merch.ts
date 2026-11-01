@@ -20,7 +20,7 @@ export interface Design {
   /** One or two sentences about the artwork. Facts only, nothing invented. */
   note: string;
   /** The artist, credited wherever the design appears. Only add credits the shop has confirmed. */
-  artist?: { handle: string; url: string };
+  artist?: { name?: string; handle: string; url: string };
 }
 
 export const DESIGNS: Design[] = [
@@ -29,8 +29,9 @@ export const DESIGNS: Design[] = [
     name: "Gluten for Punishment",
     detail: "/products/sticker-gfp.webp",
     detailKind: "art",
-    note: "An original Scott\u2019s idea, handed to an incredible artist to draw. A skeleton shoulders a loaf the size of a boulder, rendered in dense, woodcut-style line work. Sisyphus, but make it sourdough.",
-    artist: { handle: "turdrodeo", url: "https://www.instagram.com/turdrodeo/" },
+    // First two sentences are the shop's own words.
+    note: "A chance encounter between Scott and the great artist Hank St. John led to the masterpiece known as Gluten for Punishment. We\u2019ve found it speaks to bread fiends and foes alike. A skeleton shoulders a loaf the size of a boulder, rendered in dense, woodcut-style line work. Sisyphus, but make it sourdough.",
+    artist: { name: "Hank St. John", handle: "turdrodeo", url: "https://www.instagram.com/turdrodeo/" },
   },
   {
     slug: "lets-get-this-bread",
@@ -96,7 +97,7 @@ const RULES: Rule[] = [
     kind: "Tee",
     category: "Apparel",
     designs: ["gluten-for-punishment"],
-    note: "Gluten for Punishment, printed big across the back of a soft, lightweight black tee. Scott\u2019s idea, an artist\u2019s hand, and a skeleton who really commits to the bit.",
+    note: "Gluten for Punishment, printed big across the back of a soft, lightweight black tee. Scott\u2019s idea, Hank St. John\u2019s hand, and a skeleton who really commits to the bit.",
     details: {
       intro: "A soft, lightweight tee with a little stretch and an easy fit.",
       specs: [
