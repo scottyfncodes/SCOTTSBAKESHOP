@@ -1,5 +1,6 @@
 import { findVariant } from "./catalog";
 import type { CartLine, Product, Variant } from "./types";
+import { merchFor } from "./merch";
 
 export class CartError extends Error {}
 
@@ -39,7 +40,8 @@ export function priceCart(products: Product[], lines: CartLine[]) {
 
 export function describe(product: Product, variant: Variant): string {
   const opts = [variant.color, variant.size].filter(Boolean).join(" / ");
-  return opts ? `${product.name} (${opts})` : product.name;
+  const title = merchFor(product.name).title;
+  return opts ? `${title} (${opts})` : title;
 }
 
 /** Compact "variantId:qty:unitCents,…" form stored in Stripe metadata (500-char limit). */

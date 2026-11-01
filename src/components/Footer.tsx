@@ -11,8 +11,8 @@ export function Footer() {
               <img src="/logo.png" alt="" width={56} height={56} />
               <strong>Scott&rsquo;s Bake Shop</strong>
             </div>
-            <p className="footer-fine" style={{ borderTop: 0, paddingTop: 12, marginTop: 0 }}>
-              Merch made to order and shipped by our print partner, Printful.
+            <p className="footer-tag">
+              A neighborhood bakery for six years. Merch from here on, made to order and shipped by our print partner, Printful.
             </p>
           </div>
           <div>
@@ -25,6 +25,7 @@ export function Footer() {
                 <li><a href={site.instagramUrl} target="_blank" rel="noopener noreferrer">Instagram</a></li>
               )}
               <li><Link href="/#shop">Shop</Link></li>
+              <li><Link href="/#story">Our story</Link></li>
             </ul>
           </div>
           <div>

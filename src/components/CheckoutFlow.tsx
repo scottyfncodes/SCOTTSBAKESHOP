@@ -5,6 +5,7 @@ import Link from "next/link";
 import { loadStripe } from "@stripe/stripe-js";
 import { EmbeddedCheckout, EmbeddedCheckoutProvider } from "@stripe/react-stripe-js";
 import { formatMoney } from "@/lib/format";
+import { lineImage, merchFor } from "@/lib/merch";
 import { US_STATES } from "@/lib/regions";
 import type { Product, ShippingAddress, ShippingOption } from "@/lib/types";
 import { useCart } from "./CartProvider";
@@ -219,9 +220,9 @@ export function CheckoutFlow({ products, countries, checkoutOpen }: { products: 
         <ul className="summary-items">
           {resolved.map(({ line, match }) => (
             <li key={line.variantId}>
-              {match!.variant.image ? <img src={match!.variant.image} alt="" width={52} height={52} className="thumb-placeholder" /> : <span className="thumb-placeholder" />}
+              {lineImage(match!.product, match!.variant) ? <img src={lineImage(match!.product, match!.variant)!} alt="" width={52} height={52} className="thumb-placeholder" /> : <span className="thumb-placeholder" />}
               <span>
-                {match!.product.name} × {line.quantity}
+                {merchFor(match!.product.name).title} × {line.quantity}
                 <br /><span className="muted">{optionText(match!.variant)}</span>
               </span>
               <span className="price">{formatMoney(match!.variant.price * line.quantity, currency)}</span>

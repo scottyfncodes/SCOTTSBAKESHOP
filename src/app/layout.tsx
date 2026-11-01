@@ -13,7 +13,7 @@ const outfit = Outfit({ subsets: ["latin"], weight: ["400", "500", "600"], varia
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://scottsbakeshop.com"),
   title: { default: "Scott's Bake Shop Merch", template: "%s · Scott's Bake Shop" },
-  description: "Let's get this bread. Hats, tees and hoodies from Scott's Bake Shop, made to order.",
+  description: "Let's get this bread. Tees, hoodies, hats and mugs from Scott's Bake Shop, printed to order and shipped to your door.",
   icons: { icon: "/logo.png", apple: "/apple-touch-icon.png" },
   openGraph: { siteName: "Scott's Bake Shop", images: ["/logo.png"] },
 };

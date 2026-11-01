@@ -4,8 +4,8 @@
 // re-publishing a product in Printful gives it a new ID.
 // Files live in public/products/.
 const EXTRA_PHOTOS: { match: RegExp; photos: string[]; lead?: boolean }[] = [
-  { match: /hoodie/i, photos: ["/products/hoodie-back.jpg"], lead: true },
-  { match: /t-?shirt|\btee\b/i, photos: ["/products/tee-back.jpg"], lead: true },
+  { match: /hoodie/i, photos: ["/products/hoodie-back.jpg", "/products/hoodie-print.jpg"], lead: true },
+  { match: /t-?shirt|\btee\b/i, photos: ["/products/tee-back.jpg", "/products/tee-print.jpg"], lead: true },
   { match: /\bhat\b|\bcap\b/i, photos: ["/products/hat-side.jpg", "/products/hat-back.jpg"] },
   { match: /\bmug\b/i, photos: ["/products/mug-front.jpg", "/products/mug-back.jpg"] },
 ];

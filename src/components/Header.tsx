@@ -26,7 +26,8 @@ export function Header() {
           <span className="brand-name">Scott&rsquo;s Bake Shop</span>
         </Link>
         <nav className="header-nav" aria-label="Main">
-          <Link href="/#shop" className="nav-link nav-shop">Shop</Link>
+          <Link href="/#shop" className="nav-link">Shop</Link>
+          <Link href="/#story" className="nav-link nav-story">Story</Link>
           <Link href="/cart" className="cart-button" aria-label={label}>
             <CartIcon />
             {ready && count > 0 && <span className="cart-count" aria-hidden="true">{count}</span>}
