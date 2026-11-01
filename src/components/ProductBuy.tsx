@@ -172,6 +172,10 @@ export function ProductBuy({ product, shipTo }: { product: Product; shipTo: stri
         {!hasColors && product.colors.length === 1 && (
           <p className="pdp-solo">Color: <span>{product.colors[0].name}</span></p>
         )}
+        {!hasSizes && product.sizes.length === 1 && (
+          // One size only (sticker, mug, hat): nothing to pick, but buyers still need to know it.
+          <p className="pdp-solo">Size: <span>{product.sizes[0].replace(/\s*[×x]\s*/, " × ")}</span></p>
+        )}
 
         {hasSizes && (
           <fieldset
