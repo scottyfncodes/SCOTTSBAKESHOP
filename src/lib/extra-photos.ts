@@ -8,6 +8,11 @@ const EXTRA_PHOTOS: { match: RegExp; photos: string[]; lead?: boolean }[] = [
   { match: /t-?shirt|\btee\b/i, photos: ["/products/tee-back.jpg", "/products/tee-print.jpg"], lead: true },
   { match: /\bhat\b|\bcap\b/i, photos: ["/products/hat-side.jpg", "/products/hat-back.jpg"] },
   { match: /\bmug\b/i, photos: ["/products/mug-front.jpg", "/products/mug-back.jpg"] },
+  {
+    match: /sticker/i,
+    photos: ["/products/sticker-lgtb.webp", "/products/sticker-laptop.jpg", "/products/sticker-notebook.jpg", "/products/sticker-car.jpg"],
+    lead: true,
+  },
 ];
 
 export function extraPhotosFor(productName: string): { photos: string[]; lead: boolean } {
