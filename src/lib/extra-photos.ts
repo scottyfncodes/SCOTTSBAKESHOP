@@ -9,7 +9,8 @@ const EXTRA_PHOTOS: { match: RegExp; photos: string[]; lead?: boolean }[] = [
   { match: /\bhat\b|\bcap\b/i, photos: ["/products/hat-side.jpg", "/products/hat-back.jpg"] },
   { match: /\bmug\b/i, photos: ["/products/mug-front.jpg", "/products/mug-back.jpg"] },
   {
-    match: /sticker/i,
+    // Kurt's sticker mockups, only for a sticker whose Printful name says so.
+    match: /(bread|lgtb).*sticker|sticker.*(bread|lgtb)/i,
     photos: ["/products/sticker-lgtb.webp", "/products/sticker-laptop.jpg", "/products/sticker-notebook.jpg", "/products/sticker-car.jpg"],
     lead: true,
   },
