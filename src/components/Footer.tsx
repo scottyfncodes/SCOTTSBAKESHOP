@@ -36,7 +36,12 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        <p className="footer-fine">&copy; {new Date().getFullYear()} Scott&rsquo;s Bake Shop. Payments secured by Stripe.</p>
+        <div className="footer-fine footer-bottom">
+          <p>&copy; {new Date().getFullYear()} Scott&rsquo;s Bake Shop. Payments secured by Stripe.</p>
+          <p>
+            by <a href="https://haveanapp.com" target="_blank" rel="noopener">HaveAnApp</a>
+          </p>
+        </div>
       </div>
     </footer>
   );

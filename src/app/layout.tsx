@@ -1,13 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Outfit } from "next/font/google";
+import { Newsreader, Outfit } from "next/font/google";
 import { CartProvider } from "@/components/CartProvider";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import "./globals.css";
 import Script from "next/script";
 
-// One family, the same rounded geometric Outfit as the logo-style headings, keeps the shop feeling like one brand.
-const outfit = Outfit({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-outfit" });
+// Newsreader, a bookish serif, for headings; Outfit, the clean geometric sans that echoes the logo lettering, for everything else.
+const newsreader = Newsreader({ subsets: ["latin"], weight: ["400", "500"], style: ["normal", "italic"], variable: "--font-newsreader" });
+const outfit = Outfit({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-outfit" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://scottsbakeshop.com"),
@@ -21,7 +22,7 @@ export const viewport: Viewport = { themeColor: "#edead4", width: "device-width"
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={outfit.variable}>
+    <html lang="en" className={`${outfit.variable} ${newsreader.variable}`}>
       <body>
         <a className="skip-link" href="#main">Skip to content</a>
         <CartProvider>
