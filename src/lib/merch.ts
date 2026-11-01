@@ -14,8 +14,9 @@ export const CATEGORIES: Category[] = ["Apparel", "Headwear", "Accessories"];
 export interface Design {
   slug: string;
   name: string;
-  /** Close-up of the printed artwork, cropped from our own product photo. */
+  /** The artwork image: the artist's original file ("art") or a crop of our own product photo ("photo"). */
   detail: string;
+  detailKind: "art" | "photo";
   /** One or two sentences about the artwork. Facts only, nothing invented. */
   note: string;
   /** The artist, credited wherever the design appears. Only add credits the shop has confirmed. */
@@ -26,7 +27,8 @@ export const DESIGNS: Design[] = [
   {
     slug: "gluten-for-punishment",
     name: "Gluten for Punishment",
-    detail: "/products/hoodie-print.jpg",
+    detail: "/products/gluten-for-punishment-art.jpg",
+    detailKind: "art",
     note: "A skeleton hauling a loaf the size of a boulder, drawn like an old woodcut. Printed big across the back.",
     artist: { handle: "turdrodeo", url: "https://www.instagram.com/turdrodeo/" },
   },
@@ -34,6 +36,7 @@ export const DESIGNS: Design[] = [
     slug: "lets-get-this-bread",
     name: "Let’s Get This Bread",
     detail: "/products/mug-print.jpg",
+    detailKind: "photo",
     note: "The house slogan in wobbly saloon lettering. Good on a hat, better on a Monday morning.",
     artist: { handle: "kurt_player02", url: "https://www.instagram.com/kurt_player02/" },
   },

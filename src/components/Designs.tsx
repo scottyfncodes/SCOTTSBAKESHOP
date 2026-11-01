@@ -22,8 +22,14 @@ export function Designs({ products }: { products: Product[] }) {
         <div className="design-list">
           {designs.map(({ design, items }, i) => (
             <article key={design.slug} className="design">
-              <div className="design-media">
-                <img src={design.detail} alt={`${design.name} artwork, close up`} width={460} height={575} loading="lazy" />
+              <div className={`design-media design-media-${design.detailKind}`}>
+                <img
+                  src={design.detail}
+                  alt={design.detailKind === "art" ? `${design.name}, original artwork` : `${design.name} artwork, close up`}
+                  width={design.detailKind === "art" ? 960 : 460}
+                  height={design.detailKind === "art" ? 1185 : 575}
+                  loading="lazy"
+                />
               </div>
               <div className="design-body">
                 <p className="design-no">No. {String(i + 1).padStart(2, "0")}</p>
