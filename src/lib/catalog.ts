@@ -30,6 +30,8 @@ function previewImage(v: PfSyncVariant): string | null {
   return preview?.preview_url ?? v.product?.image ?? null;
 }
 
+const APPAREL_SIZES = ["XXS", "XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL", "6XL"];
+
 const UNAVAILABLE = new Set(["discontinued", "out_of_stock", "temporary_out_of_stock", "stocked_out"]);
 
 export function normalizeProduct(sync: PfSyncProduct, catalog: PfCatalogProduct | null): Product | null {
@@ -60,14 +62,17 @@ export function normalizeProduct(sync: PfSyncProduct, catalog: PfCatalogProduct 
 
   if (variants.length === 0) return null;
 
-  // Keep Printful's catalog ordering for sizes (S, M, L… rather than alphabetical).
-  const sizeOrder = catalog?.variants.map((cv) => cv.size) ?? [];
+  // Apparel sizes in wearing order; anything else keeps Printful's catalog order.
+  // (Printful's catalog lists some products' sizes alphabetically.)
+  const catalogOrder = catalog?.variants.map((cv) => cv.size) ?? [];
+  const rank = (size: string) => {
+    const i = APPAREL_SIZES.indexOf(size.toUpperCase());
+    if (i !== -1) return i;
+    const c = catalogOrder.indexOf(size);
+    return APPAREL_SIZES.length + (c === -1 ? 999 : c);
+  };
   const sizes = [...new Set(variants.map((v) => v.size).filter((s): s is string => !!s))].sort(
-    (a, b) => {
-      const ia = sizeOrder.indexOf(a);
-      const ib = sizeOrder.indexOf(b);
-      return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
-    },
+    (a, b) => rank(a) - rank(b),
   );
 
   const colors: Product["colors"] = [];
