@@ -108,7 +108,15 @@ export async function resolveProductIds(
 ): Promise<string[]> {
   if (configured.length > 0) return configured;
   const all = await client.listStoreProducts(revalidate);
-  return all.filter((p) => !p.is_ignored && p.synced > 0).map((p) => String(p.id));
+  const sellable = all.filter((p) => !p.is_ignored && p.synced > 0);
+  if (sellable.length === 0) {
+    // Names and counts only, so an empty shelf can be explained from the logs.
+    console.warn(
+      `[catalog] no sellable Printful store products (${all.length} listed):`,
+      all.map((p) => `${p.id} "${p.name}" synced=${p.synced}/${p.variants}${p.is_ignored ? " ignored" : ""}`).join("; ") || "none",
+    );
+  }
+  return sellable.map((p) => String(p.id));
 }
 
 /**
