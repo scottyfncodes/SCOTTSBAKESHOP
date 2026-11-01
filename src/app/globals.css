@@ -133,7 +133,7 @@ h1, h2, h3, .brand-name, .footer-wordmark {
   border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); font-size: 0.92rem;
 }
 @media (max-width: 899px) { .hero-dateline { margin-bottom: 18px; } }
-.hero-title { font-size: clamp(3.2rem, 15.2vw, 7rem); line-height: 0.98; letter-spacing: -0.04em; margin: 0 0 16px; }
+.hero-title { font-size: clamp(3.2rem, 15.2vw, 7rem); line-height: 1.08; letter-spacing: -0.04em; margin: 0 0 16px; }
 .hero-title em { letter-spacing: -0.045em; }
 .hero-sub { max-width: 30ch; margin: 0 0 20px; font-size: 1.1rem; line-height: 1.42; }
 .hero .btn { min-width: 220px; }

@@ -13,7 +13,7 @@ describe("merchFor", () => {
 
   it("credits the artist behind each design", () => {
     const [design] = merchFor("Unisex Hoodie").designs;
-    expect(design.artist).toEqual({ handle: "turdrodeo", url: "https://www.instagram.com/turdrodeo/" });
+    expect(design.artist).toEqual({ name: "Hank St. John", handle: "turdrodeo", url: "https://www.instagram.com/turdrodeo/" });
     expect(merchFor("Hat").designs[0].artist).toEqual({ handle: "kurt_player02", url: "https://www.instagram.com/kurt_player02/" });
   });
 
