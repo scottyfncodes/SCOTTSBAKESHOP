@@ -36,7 +36,9 @@ export function ProductBuy({ product, shipTo }: { product: Product; shipTo: stri
 
   // Main picture first (our lead photo, or the chosen color's mockup), then the rest.
   const lead = variant ?? forColor(color)[0];
-  const ordered = product.photosLead
+  const ordered = product.photosOnly
+    ? product.photos
+    : product.photosLead
     ? [...product.photos, lead?.image, ...(lead?.images ?? []), ...product.images]
     : [lead?.image, ...product.photos, ...(lead?.images ?? []), product.image, ...product.images];
   const gallery = [...new Set(ordered)].filter((u): u is string => !!u);

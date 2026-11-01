@@ -195,5 +195,7 @@ describe("Printful ID names", () => {
     expect(gfp.name).toBe("Gluten for Punishment Sticker");
     expect(gfp.image).toBe("/products/sticker-gfp.webp");
     expect(gfp.photos).toEqual(["/products/sticker-gfp.webp", "/products/sticker-gfp-laptop.jpg"]);
+    expect(gfp.photosOnly).toBe(true);
+    expect(lgtb.photosOnly).toBe(false);
   });
 });

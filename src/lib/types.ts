@@ -29,6 +29,8 @@ export interface Product {
   photos: string[];
   /** True when photos[0] is the main picture instead of the Printful mockup. */
   photosLead: boolean;
+  /** True when only our photos are shown (Printful's mockups for it are unreliable). */
+  photosOnly: boolean;
   currency: string;
   colors: { name: string; code: string | null }[];
   sizes: string[];
