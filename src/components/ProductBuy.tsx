@@ -31,7 +31,9 @@ export function ProductBuy({ product }: { product: Product }) {
 
   // Pictures for the chosen color first, then the rest of the product's pictures.
   const lead = variant ?? forColor(color)[0];
-  const gallery = [...new Set([lead?.image, ...(lead?.images ?? []), product.image, ...product.images])].filter(
+  const gallery = [
+    ...new Set([lead?.image, ...product.photos, ...(lead?.images ?? []), product.image, ...product.images]),
+  ].filter(
     (u): u is string => !!u,
   );
   const [shown, setShown] = useState(0);

@@ -1,5 +1,6 @@
 import "server-only";
 import { env } from "./env";
+import { extraPhotosFor } from "./extra-photos";
 import {
   printful,
   PrintfulNotConfigured,
@@ -98,6 +99,7 @@ export function normalizeProduct(sync: PfSyncProduct, catalog: PfCatalogProduct 
     description: catalog?.product.description?.trim() || null,
     image: sync.sync_product.thumbnail_url ?? variants[0].image,
     images: unique([sync.sync_product.thumbnail_url, ...variants.flatMap((v) => [v.image, ...v.images])]),
+    photos: extraPhotosFor(sync.sync_product.name),
     currency: variants[0].currency,
     colors,
     sizes,

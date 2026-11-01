@@ -25,6 +25,8 @@ export interface Product {
   image: string | null;
   /** Product thumbnail plus every distinct variant picture, for the product page gallery. */
   images: string[];
+  /** Our own photos for this product (public/products), shown after the main mockup. */
+  photos: string[];
   currency: string;
   colors: { name: string; code: string | null }[];
   sizes: string[];
