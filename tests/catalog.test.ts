@@ -28,6 +28,11 @@ describe("normalizeProduct", () => {
     expect(tee.colors).toEqual([{ name: "Black", code: "#0c0c0c" }]);
   });
 
+  it("puts apparel sizes in wearing order even when Printful lists them alphabetically", () => {
+    const alpha = { ...teeCatalog, variants: [...teeCatalog.variants].sort((a, b) => a.size.localeCompare(b.size)) };
+    expect(normalizeProduct(teeSync, alpha)!.sizes).toEqual(["S", "M", "L", "2XL"]);
+  });
+
   it("handles color-only products (hat)", () => {
     const hat = normalizeProduct(hatSync, hatCatalog)!;
     expect(hat.colors.map((c) => c.name)).toEqual(["Khaki", "Stone"]);
