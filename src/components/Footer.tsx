@@ -5,11 +5,13 @@ export function Footer() {
   return (
     <footer className="site-footer">
       <div className="container">
+        <p className="footer-wordmark" aria-hidden="true">
+          Scott&rsquo;s <em>Bake&nbsp;Shop</em>
+        </p>
         <div className="footer-grid">
           <div>
             <div className="footer-brand">
-              <img src="/logo.png" alt="" width={56} height={56} />
-              <strong>Scott&rsquo;s Bake Shop</strong>
+              <img src="/logo.png" alt="Scott's Bake Shop" width={56} height={56} />
             </div>
             <p className="footer-tag">
               A neighborhood bakery for six years. Merch from here on, made to order and shipped by our print partner, Printful.
