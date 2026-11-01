@@ -11,10 +11,10 @@ describe("merchFor", () => {
     expect(mug.designs.map((d) => d.slug)).toEqual(["lets-get-this-bread", "gluten-for-punishment"]);
   });
 
-  it("credits the Gluten for Punishment artist", () => {
+  it("credits the artist behind each design", () => {
     const [design] = merchFor("Unisex Hoodie").designs;
     expect(design.artist).toEqual({ handle: "turdrodeo", url: "https://www.instagram.com/turdrodeo/" });
-    expect(merchFor("Hat").designs[0].artist).toBeUndefined();
+    expect(merchFor("Hat").designs[0].artist).toEqual({ handle: "kurt_player02", url: "https://www.instagram.com/kurt_player02/" });
   });
 
   it("falls back to the Printful name for products it doesn't know", () => {
