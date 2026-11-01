@@ -35,6 +35,7 @@ export const DESIGNS: Design[] = [
     name: "Let’s Get This Bread",
     detail: "/products/mug-print.jpg",
     note: "The house slogan in wobbly saloon lettering. Good on a hat, better on a Monday morning.",
+    artist: { handle: "kurt_player02", url: "https://www.instagram.com/kurt_player02/" },
   },
 ];
 
