@@ -193,6 +193,8 @@ describe("Printful ID names", () => {
     expect(lgtb.name).toBe("Let\u2019s Get This Bread Sticker");
     expect(lgtb.photosLead).toBe(true);
     expect(gfp.name).toBe("Gluten for Punishment Sticker");
-    expect(gfp.photos).toEqual([]);
+    expect(gfp.photosLead).toBe(true);
+    expect(gfp.image).toBe("/products/sticker-gfp.webp");
+    expect(lgtb.image).toBe("/products/sticker-lgtb.webp");
   });
 });
