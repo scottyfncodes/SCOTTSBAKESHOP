@@ -331,6 +331,9 @@ button, input, select { font: inherit; color: inherit; }
 .description p { margin: 0 0 10px; white-space: normal; }
 .description p:last-child { margin-bottom: 0; }
 .description a { color: var(--ink); text-underline-offset: 3px; }
+.spec-list { list-style: none; margin: 0 0 12px; padding: 0; white-space: normal; border-top: 1px solid var(--line); }
+.spec-list li { padding: 8px 0; border-bottom: 1px solid var(--line); color: var(--ink); }
+.spec-note { font-weight: 500; color: var(--ink); }
 .sticky-buy { display: contents; }
 @media (max-width: 859px) {
   .sticky-buy {
