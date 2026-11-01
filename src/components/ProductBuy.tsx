@@ -7,6 +7,7 @@ import { merchFor } from "@/lib/merch";
 import type { Product } from "@/lib/types";
 import { MAX_QTY, useCart } from "./CartProvider";
 import { ArtistCredit } from "./ArtistCredit";
+import { BundleNote } from "./BundleNote";
 import { Lightbox } from "./Lightbox";
 
 export function ProductBuy({ product, shipTo }: { product: Product; shipTo: string }) {
@@ -241,6 +242,7 @@ export function ProductBuy({ product, shipTo }: { product: Product; shipTo: stri
         </div>
 
         <p className="pdp-assure">Printed to order for you, then shipped. Shipping is calculated at checkout.</p>
+        <BundleNote className="on-pdp" />
 
         <div className="pdp-details">
           {merch.details ? (

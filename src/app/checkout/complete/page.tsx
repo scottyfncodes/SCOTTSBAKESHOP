@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type Stripe from "stripe";
 import { ClearCart } from "@/components/ClearCart";
+import { BUNDLE_LABEL } from "@/lib/discount";
 import { formatMoney } from "@/lib/format";
 import { maskEmail, orderView, type OrderView } from "@/lib/order-status";
 import { site } from "@/lib/site";
@@ -49,6 +50,7 @@ export default async function CompletePage({ searchParams }: Props) {
   const paid = view !== "payment_incomplete" && view !== "expired";
   const currency = (session.currency ?? "usd").toUpperCase();
   const email = maskEmail(session.customer_details?.email);
+  const discount = session.total_details?.amount_discount ?? 0;
 
   return (
     <div className="container page confirm">
@@ -65,11 +67,14 @@ export default async function CompletePage({ searchParams }: Props) {
               {session.line_items?.data.map((li) => (
                 <li key={li.id} style={{ gridTemplateColumns: "1fr auto" }}>
                   <span>{li.description} × {li.quantity}</span>
-                  <span className="price">{formatMoney(li.amount_total, currency)}</span>
+                  <span className="price">{formatMoney(li.amount_subtotal, currency)}</span>
                 </li>
               ))}
             </ul>
-            <div className="summary-row"><span>Subtotal</span><span>{formatMoney(session.amount_subtotal ?? 0, currency)}</span></div>
+            <div className="summary-row"><span>{discount ? "Merchandise subtotal" : "Subtotal"}</span><span>{formatMoney(session.amount_subtotal ?? 0, currency)}</span></div>
+            {discount > 0 && (
+              <div className="summary-row saving"><span>{BUNDLE_LABEL}</span><span>&minus;{formatMoney(discount, currency)}</span></div>
+            )}
             <div className="summary-row"><span>Shipping</span><span>{formatMoney(session.total_details?.amount_shipping ?? 0, currency)}</span></div>
             <div className="summary-row"><span>Tax</span><span>{formatMoney(session.total_details?.amount_tax ?? 0, currency)}</span></div>
             <div className="summary-row total"><span>Total paid</span><span>{formatMoney(session.amount_total ?? 0, currency)}</span></div>

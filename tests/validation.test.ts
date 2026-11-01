@@ -22,7 +22,18 @@ vi.mock("@/lib/printful", async (orig) => ({
 }));
 const stripe = {
   customers: { create: vi.fn(async () => ({ id: "cus_1" })) },
-  checkout: { sessions: { create: vi.fn(async () => ({ client_secret: "cs_secret" })) } },
+  coupons: {
+    retrieve: vi.fn(async (id: string) => ({ id, valid: true, percent_off: null, currency: "usd", amount_off: Number(id.split("-").pop()) })),
+  },
+  checkout: {
+    sessions: {
+      create: vi.fn(async (p: { line_items: { quantity: number; price_data: { unit_amount: number } }[]; discounts?: { coupon: string }[] }) => ({
+        client_secret: "cs_secret",
+        amount_subtotal: p.line_items.reduce((s, l) => s + l.price_data.unit_amount * l.quantity, 0),
+        total_details: { amount_discount: p.discounts ? Number(p.discounts[0].coupon.split("-").pop()) : 0 },
+      })),
+    },
+  },
 };
 vi.mock("@/lib/stripe", () => ({ getStripe: () => stripe }));
 

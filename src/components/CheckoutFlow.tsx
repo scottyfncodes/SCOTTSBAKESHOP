@@ -9,7 +9,8 @@ import { lineImage, merchFor } from "@/lib/merch";
 import { US_STATES } from "@/lib/regions";
 import type { Product, ShippingAddress, ShippingOption } from "@/lib/types";
 import { useCart } from "./CartProvider";
-import { findLine, optionText } from "./CartView";
+import { findLine, MerchRows, optionText } from "./CartView";
+import { cartTotals } from "./cart-totals";
 
 const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 const stripePromise = publishableKey ? loadStripe(publishableKey) : null;
@@ -39,7 +40,7 @@ export function CheckoutFlow({ products, countries, checkoutOpen }: { products: 
   );
   const items = resolved.map((r) => ({ variantId: r.line.variantId, quantity: r.line.quantity }));
   const currency = resolved[0]?.match?.variant.currency ?? "USD";
-  const subtotal = resolved.reduce((s, r) => s + r.match!.variant.price * r.line.quantity, 0);
+  const totals = cartTotals(resolved);
   const shipping = options.find((o) => o.id === method);
 
   if (!ready)
@@ -229,10 +230,10 @@ export function CheckoutFlow({ products, countries, checkoutOpen }: { products: 
             </li>
           ))}
         </ul>
-        <div className="summary-row"><span>Subtotal</span><span>{formatMoney(subtotal, currency)}</span></div>
+        <MerchRows totals={totals} currency={currency} />
         <div className="summary-row"><span>Shipping</span><span>{shipping ? formatMoney(shipping.amount, currency) : <span className="muted">Next step</span>}</span></div>
         <div className="summary-row"><span>Tax</span><span className="muted">Calculated at payment</span></div>
-        <div className="summary-row total"><span>Total before tax</span><span>{formatMoney(subtotal + (shipping?.amount ?? 0), currency)}</span></div>
+        <div className="summary-row total"><span>Total before tax</span><span>{formatMoney(totals.total + (shipping?.amount ?? 0), currency)}</span></div>
         <p className="fine">Your card is charged once you pay. Prices are confirmed against our print partner&rsquo;s catalog.</p>
       </aside>
     </div>

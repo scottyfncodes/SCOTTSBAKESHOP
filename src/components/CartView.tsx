@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { BUNDLE_LABEL } from "@/lib/discount";
 import { formatMoney } from "@/lib/format";
 import { lineImage, merchFor } from "@/lib/merch";
 import type { Product, Variant } from "@/lib/types";
+import { BundleNote } from "./BundleNote";
 import { MAX_QTY, useCart } from "./CartProvider";
+import { cartTotals } from "./cart-totals";
 
 export function findLine(products: Product[], variantId: number): { product: Product; variant: Variant } | null {
   for (const product of products) {
@@ -39,7 +42,7 @@ export function CartView({ products }: { products: Product[] }) {
   const sellable = resolved.filter((r) => r.match?.variant.available);
   const blocked = resolved.length !== sellable.length;
   const currency = sellable[0]?.match?.variant.currency ?? "USD";
-  const subtotal = sellable.reduce((s, r) => s + r.match!.variant.price * r.line.quantity, 0);
+  const totals = cartTotals(sellable);
 
   return (
     <div className="cart-layout">
@@ -79,8 +82,9 @@ export function CartView({ products }: { products: Product[] }) {
 
       <aside className="summary" aria-label="Order summary">
         <h2>Summary</h2>
-        <div className="summary-row"><span>Subtotal</span><span>{formatMoney(subtotal, currency)}</span></div>
+        <MerchRows totals={totals} currency={currency} />
         <div className="summary-row"><span>Shipping</span><span className="muted">At checkout</span></div>
+        {totals.discount === 0 && <BundleNote className="in-summary" />}
         {blocked && <p className="alert" style={{ marginTop: 12 }}>Remove unavailable items to continue.</p>}
         {blocked ? (
           <span className="btn btn-dark btn-block" aria-disabled="true">Checkout</span>
@@ -90,5 +94,19 @@ export function CartView({ products }: { products: Product[] }) {
         <p className="fine">Each item is printed to order. Shipping is calculated from your address.</p>
       </aside>
     </div>
+  );
+}
+
+/** Merchandise subtotal, then the bundle discount and what's left after it when it applies. */
+export function MerchRows({ totals, currency }: { totals: ReturnType<typeof cartTotals>; currency: string }) {
+  if (totals.discount === 0)
+    return <div className="summary-row"><span>Subtotal</span><span>{formatMoney(totals.subtotal, currency)}</span></div>;
+  return (
+    <>
+      <div className="summary-row"><span>Merchandise subtotal</span><span>{formatMoney(totals.subtotal, currency)}</span></div>
+      <div className="summary-row saving"><span>{BUNDLE_LABEL}</span><span>&minus;{formatMoney(totals.discount, currency)}</span></div>
+      <div className="summary-row"><span>Merchandise after discount</span><span>{formatMoney(totals.total, currency)}</span></div>
+      <p className="saving-note">You&rsquo;re saving {formatMoney(totals.discount, currency)} with the bundle.</p>
+    </>
   );
 }

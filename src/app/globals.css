@@ -419,6 +419,13 @@ h1, h2, h3, .brand-name, .footer-wordmark {
 .summary-row { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; font-variant-numeric: tabular-nums; }
 .summary-row.total { border-top: 1px solid var(--line-strong); margin-top: 8px; padding-top: 12px; font-size: 1.3rem; }
 .summary .btn { margin-top: 16px; }
+/* Bundle discount: a quiet note with a short mustard rule, like a pencilled margin note. Green only means money saved. */
+.bundle-note { margin: 0 0 18px; padding-left: 12px; border-left: 3px solid var(--mustard-deep); color: var(--ink-soft); font-size: 1rem; line-height: 1.4; }
+.bundle-note em { font-family: var(--font-display); font-style: italic; color: var(--ink); }
+.bundle-note.in-summary { margin: 12px 0 0; font-size: 0.92rem; }
+.bundle-note.on-pdp { margin: 10px 0 0; font-size: 0.98rem; }
+.summary-row.saving span:last-child { color: var(--ok); }
+.saving-note { margin: 2px 0 4px; font-size: 0.88rem; color: var(--ok); }
 .fine { font-size: 0.88rem; color: var(--ink-soft); margin: 12px 0 0; }
 .summary-items { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 10px; }
 .summary-items li { display: grid; grid-template-columns: 52px 1fr auto; gap: 10px; align-items: center; font-size: 0.92rem; }

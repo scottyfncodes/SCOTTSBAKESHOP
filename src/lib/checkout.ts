@@ -1,5 +1,6 @@
 import "server-only";
 import type Stripe from "stripe";
+import { BUNDLE_LABEL, BUNDLE_PERCENT } from "./discount";
 import { env } from "./env";
 import { getCatalog } from "./catalog";
 import { CartError, describe, encodeItems, priceCart } from "./pricing";
@@ -26,6 +27,47 @@ export function returnOrigin(origin: string | undefined): string {
   if (/^https:\/\/scottsbakeshop(-[a-z0-9-]+)?\.vercel\.app$/.test(origin)) return origin;
   if (/^http:\/\/localhost(:\d+)?$/.test(origin)) return origin;
   return site;
+}
+
+const stripeCode = (err: unknown) => (err as { code?: string } | null)?.code;
+
+/**
+ * The Stripe coupon for a bundle discount of exactly `amount` cents.
+ *
+ * The amount is computed here from the server-priced cart, so Stripe's
+ * discount is to the cent what the cart showed (a percent coupon would leave
+ * the rounding to Stripe). Coupons are reused per currency and amount, so the
+ * Stripe dashboard gets one per distinct discount, not one per checkout.
+ * Checkout never takes promotion codes, so shoppers can't apply these themselves.
+ */
+export async function bundleCoupon(stripe: Stripe, amount: number, currency: string): Promise<string> {
+  const id = `bundle${BUNDLE_PERCENT}-${currency}-${amount}`;
+  const usable = (c: Stripe.Coupon) => c.valid && !c.percent_off && c.amount_off === amount && c.currency === currency;
+
+  let coupon: Stripe.Coupon | null = null;
+  try {
+    coupon = await stripe.coupons.retrieve(id);
+  } catch (err) {
+    if (stripeCode(err) !== "resource_missing") throw err;
+  }
+  if (!coupon) {
+    try {
+      coupon = await stripe.coupons.create({
+        id,
+        name: BUNDLE_LABEL,
+        amount_off: amount,
+        currency,
+        duration: "once",
+        metadata: { kind: "bundle_discount", percent: String(BUNDLE_PERCENT) },
+      });
+    } catch (err) {
+      // A concurrent checkout created it first.
+      if (stripeCode(err) !== "resource_already_exists") throw err;
+      coupon = await stripe.coupons.retrieve(id);
+    }
+  }
+  if (!usable(coupon)) throw new Error(`Stripe coupon ${id} doesn't match the bundle discount`);
+  return coupon.id;
 }
 
 /**
@@ -67,6 +109,9 @@ export async function createCheckoutSession(stripe: Stripe, input: CheckoutInput
 
   const currency = cart.currency.toLowerCase();
   const items = encodeItems(cart.lines);
+  // The only discount a session can carry: computed here, never sent by the browser.
+  const discounts = cart.discount > 0 ? [{ coupon: await bundleCoupon(stripe, cart.discount, currency) }] : undefined;
+  const metadata = { items, shipping_method: rate.id, bundle_discount: String(cart.discount) };
 
   const session = await stripe.checkout.sessions.create({
     ui_mode: "embedded",
@@ -103,16 +148,26 @@ export async function createCheckoutSession(stripe: Stripe, input: CheckoutInput
         },
       },
     ],
+    ...(discounts ? { discounts } : {}),
     automatic_tax: { enabled: env.stripeAutomaticTax() },
     payment_intent_data: {
       shipping,
       receipt_email: a.email,
-      metadata: { items, shipping_method: rate.id },
+      metadata,
     },
-    metadata: { items, shipping_method: rate.id },
+    metadata,
     return_url: `${returnOrigin(input.origin)}/checkout/complete?session_id={CHECKOUT_SESSION_ID}`,
   });
 
   if (!session.client_secret) throw new Error("Stripe did not return a client secret");
+
+  // Belt and braces: never let a shopper pay an amount the cart didn't show.
+  if (session.amount_subtotal !== cart.subtotal || (session.total_details?.amount_discount ?? 0) !== cart.discount) {
+    await stripe.checkout.sessions.expire(session.id).catch(() => undefined);
+    throw new Error(
+      `Stripe totals (subtotal ${session.amount_subtotal}, discount ${session.total_details?.amount_discount}) ` +
+        `don't match the cart (subtotal ${cart.subtotal}, discount ${cart.discount})`,
+    );
+  }
   return { clientSecret: session.client_secret };
 }

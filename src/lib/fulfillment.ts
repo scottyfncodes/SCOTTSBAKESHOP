@@ -94,6 +94,8 @@ export async function fulfillCheckoutSession(sessionId: string, deps: Fulfillmen
     retail_costs: {
       currency: (session.currency ?? "usd").toUpperCase(),
       subtotal: dollars(session.amount_subtotal),
+      // The bundle discount, so Printful's retail record adds up to what was charged.
+      discount: dollars(session.total_details?.amount_discount),
       shipping: dollars(session.total_details?.amount_shipping),
       tax: dollars(session.total_details?.amount_tax),
       total: dollars(session.amount_total),

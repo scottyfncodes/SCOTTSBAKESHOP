@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BundleNote } from "@/components/BundleNote";
 import { Designs } from "@/components/Designs";
 import { Shelf } from "@/components/Shelf";
 import { ShopNotice } from "@/components/ShopNotice";
@@ -54,7 +55,10 @@ export default async function Home() {
         ) : products.length === 0 ? (
           <ShopNotice status="empty" />
         ) : (
-          <Shelf products={products} />
+          <>
+            <BundleNote />
+            <Shelf products={products} />
+          </>
         )}
       </section>
 
