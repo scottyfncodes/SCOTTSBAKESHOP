@@ -59,6 +59,11 @@ describe("normalizeProduct", () => {
     expect(new Set(p.images).size).toBe(p.images.length);
   });
 
+  it("attaches our own photos by product name", () => {
+    expect(normalizeProduct(teeSync, teeCatalog)!.photos).toEqual(["/products/tee-back.jpg"]);
+    expect(normalizeProduct(hatSync, hatCatalog)!.photos).toEqual(["/products/hat-side.jpg", "/products/hat-back.jpg"]);
+  });
+
   it("handles color-only products (hat)", () => {
     const hat = normalizeProduct(hatSync, hatCatalog)!;
     expect(hat.colors.map((c) => c.name)).toEqual(["Khaki", "Stone"]);
