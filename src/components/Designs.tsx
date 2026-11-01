@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArtistCredit } from "./ArtistCredit";
 import { DESIGNS, merchFor } from "@/lib/merch";
 import { fromPrice } from "@/lib/product-price";
 import type { Product } from "@/lib/types";
@@ -28,6 +29,7 @@ export function Designs({ products }: { products: Product[] }) {
                 <p className="design-no">No. {String(i + 1).padStart(2, "0")}</p>
                 <h3>{design.name}</h3>
                 <p className="design-note">{design.note}</p>
+                <ArtistCredit design={design} />
                 <ul className="design-items">
                   {items.map((p) => (
                     <li key={p.id}>

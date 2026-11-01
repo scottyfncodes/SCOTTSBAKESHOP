@@ -18,6 +18,8 @@ export interface Design {
   detail: string;
   /** One or two sentences about the artwork. Facts only, nothing invented. */
   note: string;
+  /** The artist, credited wherever the design appears. Only add credits the shop has confirmed. */
+  artist?: { handle: string; url: string };
 }
 
 export const DESIGNS: Design[] = [
@@ -26,6 +28,7 @@ export const DESIGNS: Design[] = [
     name: "Gluten for Punishment",
     detail: "/products/hoodie-print.jpg",
     note: "A skeleton hauling a loaf the size of a boulder, drawn like an old woodcut. Printed big across the back.",
+    artist: { handle: "turdrodeo", url: "https://www.instagram.com/turdrodeo/" },
   },
   {
     slug: "lets-get-this-bread",

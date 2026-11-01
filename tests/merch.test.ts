@@ -11,6 +11,12 @@ describe("merchFor", () => {
     expect(mug.designs.map((d) => d.slug)).toEqual(["lets-get-this-bread", "gluten-for-punishment"]);
   });
 
+  it("credits the Gluten for Punishment artist", () => {
+    const [design] = merchFor("Unisex Hoodie").designs;
+    expect(design.artist).toEqual({ handle: "turdrodeo", url: "https://www.instagram.com/turdrodeo/" });
+    expect(merchFor("Hat").designs[0].artist).toBeUndefined();
+  });
+
   it("falls back to the Printful name for products it doesn't know", () => {
     expect(merchFor("Tote Bag")).toEqual({ title: "Tote Bag", kind: null, category: null, designs: [], note: null });
   });
