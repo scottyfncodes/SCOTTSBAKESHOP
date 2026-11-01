@@ -6,6 +6,7 @@ import { formatMoney } from "@/lib/format";
 import { merchFor } from "@/lib/merch";
 import type { Product } from "@/lib/types";
 import { MAX_QTY, useCart } from "./CartProvider";
+import { ArtistCredit } from "./ArtistCredit";
 import { Lightbox } from "./Lightbox";
 
 export function ProductBuy({ product, shipTo }: { product: Product; shipTo: string }) {
@@ -139,6 +140,9 @@ export function ProductBuy({ product, shipTo }: { product: Product; shipTo: stri
         <h1>{merch.title}</h1>
         <p className="pdp-price">{Number.isFinite(price) ? formatMoney(price, product.currency) : ""}</p>
         {merch.note && <p className="pdp-note">{merch.note}</p>}
+        {merch.designs.map((d) => (
+          <ArtistCredit key={d.slug} design={d} named={merch.designs.length > 1} />
+        ))}
 
         {hasColors && (
           <fieldset className="option-group">
