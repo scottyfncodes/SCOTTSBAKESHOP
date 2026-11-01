@@ -30,6 +30,17 @@ function previewImage(v: PfSyncVariant): string | null {
   return preview?.preview_url ?? v.product?.image ?? null;
 }
 
+/** Mockups ("preview" files) first, then print-file previews (front, back, sleeve…). */
+export function variantImages(v: PfSyncVariant): string[] {
+  const mockups = v.files.filter((f) => f.type === "preview").map((f) => f.preview_url);
+  const prints = v.files.filter((f) => f.type !== "preview").map((f) => f.preview_url);
+  return unique([...mockups, ...prints]);
+}
+
+function unique(urls: (string | null | undefined)[]): string[] {
+  return [...new Set(urls.filter((u): u is string => !!u))];
+}
+
 const APPAREL_SIZES = ["XXS", "XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL", "6XL"];
 
 const UNAVAILABLE = new Set(["discontinued", "out_of_stock", "temporary_out_of_stock", "stocked_out"]);
@@ -52,6 +63,7 @@ export function normalizeProduct(sync: PfSyncProduct, catalog: PfCatalogProduct 
         price,
         currency: (v.currency || "USD").toUpperCase(),
         image: previewImage(v),
+        images: variantImages(v),
         available:
           v.synced &&
           price > 0 &&
@@ -85,6 +97,7 @@ export function normalizeProduct(sync: PfSyncProduct, catalog: PfCatalogProduct 
     name: sync.sync_product.name,
     description: catalog?.product.description?.trim() || null,
     image: sync.sync_product.thumbnail_url ?? variants[0].image,
+    images: unique([sync.sync_product.thumbnail_url, ...variants.flatMap((v) => [v.image, ...v.images])]),
     currency: variants[0].currency,
     colors,
     sizes,

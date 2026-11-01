@@ -29,7 +29,13 @@ export function ProductBuy({ product }: { product: Product }) {
   const sizeAvailable = (s: string) => forColor(color).some((v) => v.size === s && v.available);
   const colorAvailable = (c: string) => product.variants.some((v) => v.color === c && v.available);
 
-  const image = variant?.image ?? forColor(color)[0]?.image ?? product.image;
+  // Pictures for the chosen color first, then the rest of the product's pictures.
+  const lead = variant ?? forColor(color)[0];
+  const gallery = [...new Set([lead?.image, ...(lead?.images ?? []), product.image, ...product.images])].filter(
+    (u): u is string => !!u,
+  );
+  const [shown, setShown] = useState(0);
+  const image = gallery[Math.min(shown, gallery.length - 1)] ?? null;
   const price = variant?.price ?? Math.min(...forColor(color).map((v) => v.price));
 
   function onAdd() {
@@ -41,8 +47,26 @@ export function ProductBuy({ product }: { product: Product }) {
 
   return (
     <div className="product">
-      <div className="product-media">
-        {image && <img src={image} alt={[product.name, color].filter(Boolean).join(", ")} width={900} height={900} />}
+      <div className="product-gallery">
+        <div className="product-media">
+          {image && <img src={image} alt={[product.name, color].filter(Boolean).join(", ")} width={900} height={900} />}
+        </div>
+        {gallery.length > 1 && (
+          <div className="thumbs" role="group" aria-label="Product photos">
+            {gallery.map((src, i) => (
+              <button
+                key={src}
+                type="button"
+                className="thumb"
+                aria-label={`Photo ${i + 1} of ${gallery.length}`}
+                aria-pressed={i === Math.min(shown, gallery.length - 1)}
+                onClick={() => setShown(i)}
+              >
+                <img src={src} alt="" width={120} height={120} loading="lazy" />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       <div>
@@ -63,6 +87,7 @@ export function ProductBuy({ product }: { product: Product }) {
                   className="chip"
                   onClick={() => {
                     setColor(c.name);
+                    setShown(0);
                     setMessage(null);
                   }}
                 >
