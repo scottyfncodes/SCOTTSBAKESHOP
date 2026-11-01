@@ -175,14 +175,13 @@ const RULES: Rule[] = [
 
 /**
  * Printful listings whose Printful name doesn't say which design they carry
- * (both stickers are "Bubble-free stickers"). Keyed by Printful sync product
+ * (the sticker was "Bubble-free stickers"). Keyed by Printful sync product
  * ID, confirmed by the shop. If a product is re-published it gets a new ID and
  * falls back to its Printful name, so renaming it in Printful (e.g. "Gluten for
  * Punishment Sticker") is the lasting fix.
  */
 export const NAME_BY_PRINTFUL_ID: Record<number, string> = {
   487916110: "Let\u2019s Get This Bread Sticker",
-  487915950: "Gluten for Punishment Sticker",
 };
 
 export interface Merch {

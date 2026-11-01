@@ -9,9 +9,9 @@ const EXTRA_PHOTOS: { match: RegExp; photos: string[]; lead?: boolean }[] = [
   { match: /\bhat\b|\bcap\b/i, photos: ["/products/hat-side.jpg", "/products/hat-back.jpg"] },
   { match: /\bmug\b/i, photos: ["/products/mug-front.jpg", "/products/mug-back.jpg"] },
   {
-    // Gluten for Punishment sticker mockups (kiss-cut, white border as printed).
+    // Gluten for Punishment sticker, black border (the shop's own mockups).
     match: /(gluten|punishment).*sticker|sticker.*(gluten|punishment)/i,
-    photos: ["/products/sticker-gfp.webp", "/products/sticker-gfp-laptop.jpg", "/products/sticker-gfp-notebook.jpg", "/products/sticker-gfp-car.jpg"],
+    photos: ["/products/sticker-gfp.webp", "/products/sticker-gfp-laptop.jpg"],
     lead: true,
   },
   {
