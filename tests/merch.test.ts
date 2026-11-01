@@ -17,6 +17,10 @@ describe("merchFor", () => {
     expect(merchFor("Hat").designs[0].artist).toEqual({ handle: "kurt_player02", url: "https://www.instagram.com/kurt_player02/" });
   });
 
+  it("names the Let's Get This Bread sticker", () => {
+    expect(merchFor("Bubble-free stickers")).toMatchObject({ title: "Let\u2019s Get This Bread Sticker", kind: "Sticker", category: "Accessories" });
+  });
+
   it("falls back to the Printful name for products it doesn't know", () => {
     expect(merchFor("Tote Bag")).toEqual({ title: "Tote Bag", kind: null, category: null, designs: [], note: null });
   });

@@ -84,6 +84,13 @@ const RULES: Rule[] = [
     title: "Two-Sided Bake Shop Mug",
     note: "Two sides, two artists. Kurt\u2019s hand-lettered Let\u2019s Get This Bread on one side, the Gluten for Punishment skeleton on the other. A 15 oz black glossy mug for the first cup of the day.",
   },
+  {
+    match: /sticker/i,
+    kind: "Sticker",
+    category: "Accessories",
+    designs: ["lets-get-this-bread"],
+    note: "Kurt\u2019s hand-lettered Let\u2019s Get This Bread as a 4\u2033 \u00d7 4\u2033 sticker. For the laptop, the notebook, the back window of the car.",
+  },
 ];
 
 export interface Merch {
