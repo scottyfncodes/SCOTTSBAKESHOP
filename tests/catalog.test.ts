@@ -33,6 +33,32 @@ describe("normalizeProduct", () => {
     expect(normalizeProduct(teeSync, alpha)!.sizes).toEqual(["S", "M", "L", "2XL"]);
   });
 
+  it("collects every distinct picture: mockups first, then print-file previews, plus the product thumbnail", () => {
+    const sync = {
+      ...teeSync,
+      sync_variants: teeSync.sync_variants.map((v, i) =>
+        i === 0
+          ? {
+              ...v,
+              files: [
+                { type: "back", preview_url: "https://files.cdn.printful.com/back.png", thumbnail_url: null },
+                { type: "preview", preview_url: "https://files.cdn.printful.com/front-mockup.png", thumbnail_url: null },
+                { type: "default", preview_url: null, thumbnail_url: null },
+              ],
+            }
+          : v,
+      ),
+    };
+    const p = normalizeProduct(sync, teeCatalog)!;
+    expect(p.variants[0].images).toEqual([
+      "https://files.cdn.printful.com/front-mockup.png",
+      "https://files.cdn.printful.com/back.png",
+    ]);
+    expect(p.images[0]).toBe("https://files.cdn.printful.com/tee.png");
+    expect(p.images).toContain("https://files.cdn.printful.com/back.png");
+    expect(new Set(p.images).size).toBe(p.images.length);
+  });
+
   it("handles color-only products (hat)", () => {
     const hat = normalizeProduct(hatSync, hatCatalog)!;
     expect(hat.colors.map((c) => c.name)).toEqual(["Khaki", "Stone"]);
