@@ -17,16 +17,20 @@ export function sortForShelf<T extends { name: string }>(products: T[]): T[] {
 
 /**
  * Hide exact duplicate listings: same name and the same variants (color, size,
- * price). Printful can end up with two copies of a product while it's being set
- * up; shoppers should see one. The first listing in Printful's order is kept.
- * Anything that differs at all (another color, size or price) stays visible.
+ * price and Printful mockup). Printful can end up with two copies of a product
+ * while it's being set up; shoppers should see one. The first listing in
+ * Printful's order is kept. Anything that differs at all stays visible; two
+ * designs on the same blank (e.g. two stickers) have different mockups.
  */
 export function dropDuplicateListings<
-  T extends { name: string; variants: { color: string | null; size: string | null; price: number }[] },
+  T extends {
+    name: string;
+    variants: { color: string | null; size: string | null; price: number; image?: string | null }[];
+  },
 >(products: T[]): T[] {
   const seen = new Set<string>();
   return products.filter((p) => {
-    const variants = p.variants.map((v) => `${v.color}|${v.size}|${v.price}`).sort().join(",");
+    const variants = p.variants.map((v) => `${v.color}|${v.size}|${v.price}|${v.image ?? ""}`).sort().join(",");
     const key = `${p.name.trim().toLowerCase()}::${variants}`;
     if (seen.has(key)) return false;
     seen.add(key);

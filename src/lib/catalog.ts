@@ -2,6 +2,7 @@ import "server-only";
 import { env } from "./env";
 import { dropDuplicateListings, sortForShelf } from "./display-order";
 import { extraPhotosFor } from "./extra-photos";
+import { NAME_BY_PRINTFUL_ID } from "./merch";
 import {
   printful,
   PrintfulError,
@@ -93,12 +94,13 @@ export function normalizeProduct(sync: PfSyncProduct, catalog: PfCatalogProduct 
     if (v.color && !colors.some((c) => c.name === v.color)) colors.push({ name: v.color, code: v.colorCode });
   }
 
-  const extra = extraPhotosFor(sync.sync_product.name);
+  const name = NAME_BY_PRINTFUL_ID[sync.sync_product.id] ?? sync.sync_product.name;
+  const extra = extraPhotosFor(name);
   const mockup = sync.sync_product.thumbnail_url ?? variants[0].image;
 
   return {
     id: sync.sync_product.id,
-    name: sync.sync_product.name,
+    name,
     description: catalog?.product.description?.trim() || null,
     image: extra.lead ? extra.photos[0] : mockup,
     images: unique([sync.sync_product.thumbnail_url, ...variants.flatMap((v) => [v.image, ...v.images])]),

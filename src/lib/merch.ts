@@ -84,14 +84,43 @@ const RULES: Rule[] = [
     title: "Two-Sided Bake Shop Mug",
     note: "Two sides, two artists. Kurt\u2019s hand-lettered Let\u2019s Get This Bread on one side, the Gluten for Punishment skeleton on the other. A 15 oz black glossy mug for the first cup of the day.",
   },
+  // Stickers share one Printful blank, so the design comes from the product's
+  // name in Printful (e.g. "Gluten for Punishment Sticker").
   {
-    match: /sticker/i,
+    match: /(gluten|punishment).*sticker|sticker.*(gluten|punishment)/i,
+    kind: "Sticker",
+    category: "Accessories",
+    designs: ["gluten-for-punishment"],
+    note: "The Gluten for Punishment skeleton and his boulder-sized loaf as a 4\u2033 \u00d7 4\u2033 sticker. Every woodcut line, small enough for a water bottle.",
+  },
+  {
+    match: /(bread|lgtb).*sticker|sticker.*(bread|lgtb)/i,
     kind: "Sticker",
     category: "Accessories",
     designs: ["lets-get-this-bread"],
     note: "Kurt\u2019s hand-lettered Let\u2019s Get This Bread as a 4\u2033 \u00d7 4\u2033 sticker. For the laptop, the notebook, the back window of the car.",
   },
+  {
+    // A sticker whose name doesn't say which design: no design is guessed.
+    match: /sticker/i,
+    kind: "Sticker",
+    category: "Accessories",
+    designs: [],
+    title: "Bake Shop Sticker",
+  },
 ];
+
+/**
+ * Printful listings whose Printful name doesn't say which design they carry
+ * (both stickers are "Bubble-free stickers"). Keyed by Printful sync product
+ * ID, confirmed by the shop. If a product is re-published it gets a new ID and
+ * falls back to its Printful name, so renaming it in Printful (e.g. "Gluten for
+ * Punishment Sticker") is the lasting fix.
+ */
+export const NAME_BY_PRINTFUL_ID: Record<number, string> = {
+  487916110: "Let\u2019s Get This Bread Sticker",
+  487915950: "Gluten for Punishment Sticker",
+};
 
 export interface Merch {
   /** Storefront title, e.g. "Gluten for Punishment Tee". */

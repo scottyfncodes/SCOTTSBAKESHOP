@@ -165,6 +165,15 @@ describe("dropDuplicateListings", () => {
     expect(out.map((p) => p.id)).toEqual([1]);
   });
 
+  it("keeps two designs on the same blank (different mockups)", async () => {
+    const { dropDuplicateListings } = await import("@/lib/display-order");
+    const out = dropDuplicateListings([
+      { id: 1, name: "Bubble-free stickers", variants: [{ color: "White", size: "4″×4″", price: 299, image: "a.png" }] },
+      { id: 2, name: "Bubble-free stickers", variants: [{ color: "White", size: "4″×4″", price: 299, image: "b.png" }] },
+    ]);
+    expect(out.map((p) => p.id)).toEqual([1, 2]);
+  });
+
   it("keeps listings that differ in color, size or price", async () => {
     const { dropDuplicateListings } = await import("@/lib/display-order");
     const out = dropDuplicateListings([
@@ -173,5 +182,17 @@ describe("dropDuplicateListings", () => {
       { id: 3, name: "T-Shirt", variants: [{ color: "Black", size: "M", price: 3100 }] },
     ]);
     expect(out.map((p) => p.id)).toEqual([1, 2, 3]);
+  });
+});
+
+describe("Printful ID names", () => {
+  it("names the two stickers by their confirmed design", () => {
+    const base = { sync_variants: hatSync.sync_variants };
+    const lgtb = normalizeProduct({ ...base, sync_product: { id: 487916110, name: "Bubble-free stickers", thumbnail_url: null } }, null)!;
+    const gfp = normalizeProduct({ ...base, sync_product: { id: 487915950, name: "Bubble-free stickers", thumbnail_url: null } }, null)!;
+    expect(lgtb.name).toBe("Let\u2019s Get This Bread Sticker");
+    expect(lgtb.photosLead).toBe(true);
+    expect(gfp.name).toBe("Gluten for Punishment Sticker");
+    expect(gfp.photos).toEqual([]);
   });
 });
