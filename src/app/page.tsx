@@ -20,9 +20,13 @@ export default async function Home() {
       <section className="hero" aria-labelledby="hero-heading">
         <div className="container hero-grid">
           <div className="hero-copy">
-            <p className="eyebrow">Apparel &amp; goods &middot; Printed to order</p>
-            {/* Page title for screen readers and search; the hero shows no headline. */}
-            <h1 id="hero-heading" className="visually-hidden">Let&rsquo;s get this bread</h1>
+            <p className="hero-dateline">
+              <span>Scott&rsquo;s Bake Shop</span>
+              <span>Merch, printed to order</span>
+            </p>
+            <h1 id="hero-heading" className="hero-title">
+              Let&rsquo;s get this <em>bread.</em>
+            </h1>
             <p className="hero-sub">Shirts, hats and mugs from Scott&rsquo;s Bake Shop, printed to order and shipped to your door.</p>
             <a href="#shop" className="btn btn-primary">Shop the merch</a>
           </div>

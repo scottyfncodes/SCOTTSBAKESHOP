@@ -32,8 +32,10 @@ export function Designs({ products }: { products: Product[] }) {
                 />
               </div>
               <div className="design-body">
-                <p className="design-no">No. {String(i + 1).padStart(2, "0")}</p>
-                <h3>{design.name}</h3>
+                <h3>
+                  <span className="design-no" aria-hidden="true">No.&nbsp;{i + 1}</span>
+                  {design.name}
+                </h3>
                 <p className="design-note">{design.note}</p>
                 <ArtistCredit design={design} />
                 <ul className="design-items">
