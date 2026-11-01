@@ -62,11 +62,21 @@ describe("fulfillCheckoutSession", () => {
         { sync_variant_id: 5001, quantity: 1, retail_price: "35.00" },
         { sync_variant_id: 6001, quantity: 1, retail_price: "20.00" },
       ],
-      retail_costs: { currency: "USD", subtotal: "55.00", shipping: "7.99", tax: "0.00", total: "62.99" },
+      retail_costs: { currency: "USD", subtotal: "55.00", discount: "0.00", shipping: "7.99", tax: "0.00", total: "62.99" },
     });
     expect(t.stripe.paymentIntents.update).toHaveBeenCalledWith("pi_123", {
       metadata: expect.objectContaining({ printful_order_id: "777", fulfillment_status: "draft" }),
     });
+  });
+
+  it("records the bundle discount so Printful's retail costs add up to what was charged", async () => {
+    // Tee + hat: $55.00 subtotal, $5.50 bundle discount, $7.99 shipping, $3.10 tax.
+    t = setup(makeSession({ amount_subtotal: 5500, amount_total: 6059, total_details: { amount_discount: 550, amount_shipping: 799, amount_tax: 310 } }));
+    await fulfillCheckoutSession("cs_test_1", t.deps);
+    const costs = (t.printful.createOrder.mock.calls[0][0] as { retail_costs: Record<string, string> }).retail_costs;
+    expect(costs).toEqual({ currency: "USD", subtotal: "55.00", discount: "5.50", shipping: "7.99", tax: "3.10", total: "60.59" });
+    const sum = Number(costs.subtotal) - Number(costs.discount) + Number(costs.shipping) + Number(costs.tax);
+    expect(sum.toFixed(2)).toBe(costs.total);
   });
 
   it("passes autoConfirm through to Printful", async () => {

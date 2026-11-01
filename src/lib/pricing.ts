@@ -1,6 +1,7 @@
 import { findVariant } from "./catalog";
 import type { CartLine, Product, Variant } from "./types";
 import { merchFor } from "./merch";
+import { merchTotals } from "./discount";
 
 export class CartError extends Error {}
 
@@ -34,7 +35,7 @@ export function priceCart(products: Product[], lines: CartLine[]) {
   return {
     lines: priced,
     currency: priced[0].variant.currency,
-    subtotal: priced.reduce((sum, l) => sum + l.lineTotal, 0),
+    ...merchTotals(priced.map((l) => ({ unitPrice: l.variant.price, quantity: l.quantity }))),
   };
 }
 
