@@ -3,7 +3,9 @@
 // and product page); otherwise they follow the mockup. Matched on the product name, not its Printful ID, because
 // re-publishing a product in Printful gives it a new ID.
 // Files live in public/products/.
-const EXTRA_PHOTOS: { match: RegExp; photos: string[]; lead?: boolean }[] = [
+// With `only`, the product page gallery shows just these photos and none of
+// Printful's mockups (for when Printful's mockups don't match the product).
+const EXTRA_PHOTOS: { match: RegExp; photos: string[]; lead?: boolean; only?: boolean }[] = [
   { match: /hoodie/i, photos: ["/products/hoodie-back.jpg", "/products/hoodie-print.jpg"], lead: true },
   { match: /t-?shirt|\btee\b/i, photos: ["/products/tee-back.jpg", "/products/tee-print.jpg"], lead: true },
   { match: /\bhat\b|\bcap\b/i, photos: ["/products/hat-side.jpg", "/products/hat-back.jpg"] },
@@ -13,6 +15,8 @@ const EXTRA_PHOTOS: { match: RegExp; photos: string[]; lead?: boolean }[] = [
     match: /(gluten|punishment).*sticker|sticker.*(gluten|punishment)/i,
     photos: ["/products/sticker-gfp.webp", "/products/sticker-gfp-laptop.jpg"],
     lead: true,
+    // Printful's mockups for this sticker don't show the black border it's printed with.
+    only: true,
   },
   {
     // Kurt's sticker mockups, only for a sticker whose Printful name says so.
@@ -22,7 +26,8 @@ const EXTRA_PHOTOS: { match: RegExp; photos: string[]; lead?: boolean }[] = [
   },
 ];
 
-export function extraPhotosFor(productName: string): { photos: string[]; lead: boolean } {
+export function extraPhotosFor(productName: string): { photos: string[]; lead: boolean; only: boolean } {
   const entry = EXTRA_PHOTOS.find((e) => e.match.test(productName));
-  return { photos: entry?.photos ?? [], lead: !!entry?.lead && !!entry.photos.length };
+  const has = !!entry?.photos.length;
+  return { photos: entry?.photos ?? [], lead: !!entry?.lead && has, only: !!entry?.only && has };
 }

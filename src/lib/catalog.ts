@@ -106,6 +106,7 @@ export function normalizeProduct(sync: PfSyncProduct, catalog: PfCatalogProduct 
     images: unique([sync.sync_product.thumbnail_url, ...variants.flatMap((v) => [v.image, ...v.images])]),
     photos: extra.photos,
     photosLead: extra.lead,
+    photosOnly: extra.only,
     currency: variants[0].currency,
     colors,
     sizes,
