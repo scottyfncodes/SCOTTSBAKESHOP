@@ -186,15 +186,14 @@ describe("dropDuplicateListings", () => {
 });
 
 describe("Printful ID names", () => {
-  it("names the two stickers by their confirmed design", () => {
+  it("names a sticker by its confirmed design, and by its Printful name otherwise", () => {
     const base = { sync_variants: hatSync.sync_variants };
     const lgtb = normalizeProduct({ ...base, sync_product: { id: 487916110, name: "Bubble-free stickers", thumbnail_url: null } }, null)!;
-    const gfp = normalizeProduct({ ...base, sync_product: { id: 487915950, name: "Bubble-free stickers", thumbnail_url: null } }, null)!;
+    const gfp = normalizeProduct({ ...base, sync_product: { id: 488020547, name: "Gluten for Punishment Sticker", thumbnail_url: null } }, null)!;
     expect(lgtb.name).toBe("Let\u2019s Get This Bread Sticker");
-    expect(lgtb.photosLead).toBe(true);
-    expect(gfp.name).toBe("Gluten for Punishment Sticker");
-    expect(gfp.photosLead).toBe(true);
-    expect(gfp.image).toBe("/products/sticker-gfp.webp");
     expect(lgtb.image).toBe("/products/sticker-lgtb.webp");
+    expect(gfp.name).toBe("Gluten for Punishment Sticker");
+    expect(gfp.image).toBe("/products/sticker-gfp.webp");
+    expect(gfp.photos).toEqual(["/products/sticker-gfp.webp", "/products/sticker-gfp-laptop.jpg"]);
   });
 });
