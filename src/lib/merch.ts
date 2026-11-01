@@ -27,7 +27,7 @@ export const DESIGNS: Design[] = [
   {
     slug: "gluten-for-punishment",
     name: "Gluten for Punishment",
-    detail: "/products/gluten-for-punishment-art.jpg",
+    detail: "/products/sticker-gfp.webp",
     detailKind: "art",
     note: "An original Scott\u2019s idea, handed to an incredible artist to draw. A skeleton shoulders a loaf the size of a boulder, rendered in dense, woodcut-style line work. Sisyphus, but make it sourdough.",
     artist: { handle: "turdrodeo", url: "https://www.instagram.com/turdrodeo/" },
