@@ -20,9 +20,11 @@ export default async function Home() {
       <section className="hero" aria-labelledby="hero-heading">
         <div className="container hero-grid">
           <div className="hero-copy">
-            <img className="hero-logo" src="/logo.png" alt="Scott's Bake Shop, hand made" width={132} height={132} />
             <p className="eyebrow">Apparel &amp; goods &middot; Printed to order</p>
-            <h1 id="hero-heading">Let&rsquo;s get this bread</h1>
+            {/* Kurt's hand-made lettering is the headline; the alt text carries it for screen readers and search. */}
+            <h1 id="hero-heading" className="hero-lettering">
+              <img src="/lets-get-this-bread.webp" alt="Let’s get this bread" width={936} height={1074} fetchPriority="high" />
+            </h1>
             <p className="hero-sub">Shirts, hats and mugs from Scott&rsquo;s Bake Shop, printed to order and shipped to your door.</p>
             <a href="#shop" className="btn btn-primary">Shop the merch</a>
           </div>
