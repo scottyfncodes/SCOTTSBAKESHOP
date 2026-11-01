@@ -33,7 +33,7 @@ describe("normalizeProduct", () => {
     expect(normalizeProduct(teeSync, alpha)!.sizes).toEqual(["S", "M", "L", "2XL"]);
   });
 
-  it("collects every distinct picture: mockups first, then print-file previews, plus the product thumbnail", () => {
+  it("keeps product mockups and leaves out bare print-file artwork", () => {
     const sync = {
       ...teeSync,
       sync_variants: teeSync.sync_variants.map((v, i) =>
@@ -41,27 +41,31 @@ describe("normalizeProduct", () => {
           ? {
               ...v,
               files: [
-                { type: "back", preview_url: "https://files.cdn.printful.com/back.png", thumbnail_url: null },
+                { type: "back", preview_url: "https://files.cdn.printful.com/back-art.png", thumbnail_url: null },
                 { type: "preview", preview_url: "https://files.cdn.printful.com/front-mockup.png", thumbnail_url: null },
-                { type: "default", preview_url: null, thumbnail_url: null },
+                { type: "default", preview_url: "https://files.cdn.printful.com/front-art.png", thumbnail_url: null },
               ],
             }
           : v,
       ),
     };
     const p = normalizeProduct(sync, teeCatalog)!;
-    expect(p.variants[0].images).toEqual([
-      "https://files.cdn.printful.com/front-mockup.png",
-      "https://files.cdn.printful.com/back.png",
-    ]);
-    expect(p.images[0]).toBe("https://files.cdn.printful.com/tee.png");
-    expect(p.images).toContain("https://files.cdn.printful.com/back.png");
+    expect(p.variants[0].images).toEqual(["https://files.cdn.printful.com/front-mockup.png"]);
+    expect(p.images).toContain("https://files.cdn.printful.com/tee.png");
+    expect(p.images.some((u) => u.includes("-art"))).toBe(false);
     expect(new Set(p.images).size).toBe(p.images.length);
   });
 
-  it("attaches our own photos by product name", () => {
-    expect(normalizeProduct(teeSync, teeCatalog)!.photos).toEqual(["/products/tee-back.jpg"]);
-    expect(normalizeProduct(hatSync, hatCatalog)!.photos).toEqual(["/products/hat-side.jpg", "/products/hat-back.jpg"]);
+  it("attaches our own photos by product name; the tee's back photo is its main picture", () => {
+    const tee = normalizeProduct(teeSync, teeCatalog)!;
+    expect(tee.photos).toEqual(["/products/tee-back.jpg"]);
+    expect(tee.photosLead).toBe(true);
+    expect(tee.image).toBe("/products/tee-back.jpg");
+
+    const hat = normalizeProduct(hatSync, hatCatalog)!;
+    expect(hat.photos).toEqual(["/products/hat-side.jpg", "/products/hat-back.jpg"]);
+    expect(hat.photosLead).toBe(false);
+    expect(hat.image).toBe("https://files.cdn.printful.com/hat.png");
   });
 
   it("handles color-only products (hat)", () => {

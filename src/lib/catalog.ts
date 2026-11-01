@@ -31,11 +31,9 @@ function previewImage(v: PfSyncVariant): string | null {
   return preview?.preview_url ?? v.product?.image ?? null;
 }
 
-/** Mockups ("preview" files) first, then print-file previews (front, back, sleeve…). */
+/** Product mockups only ("preview" files). Print files are bare artwork, not product shots. */
 export function variantImages(v: PfSyncVariant): string[] {
-  const mockups = v.files.filter((f) => f.type === "preview").map((f) => f.preview_url);
-  const prints = v.files.filter((f) => f.type !== "preview").map((f) => f.preview_url);
-  return unique([...mockups, ...prints]);
+  return unique(v.files.filter((f) => f.type === "preview").map((f) => f.preview_url));
 }
 
 function unique(urls: (string | null | undefined)[]): string[] {
@@ -93,13 +91,17 @@ export function normalizeProduct(sync: PfSyncProduct, catalog: PfCatalogProduct 
     if (v.color && !colors.some((c) => c.name === v.color)) colors.push({ name: v.color, code: v.colorCode });
   }
 
+  const extra = extraPhotosFor(sync.sync_product.name);
+  const mockup = sync.sync_product.thumbnail_url ?? variants[0].image;
+
   return {
     id: sync.sync_product.id,
     name: sync.sync_product.name,
     description: catalog?.product.description?.trim() || null,
-    image: sync.sync_product.thumbnail_url ?? variants[0].image,
+    image: extra.lead ? extra.photos[0] : mockup,
     images: unique([sync.sync_product.thumbnail_url, ...variants.flatMap((v) => [v.image, ...v.images])]),
-    photos: extraPhotosFor(sync.sync_product.name),
+    photos: extra.photos,
+    photosLead: extra.lead,
     currency: variants[0].currency,
     colors,
     sizes,

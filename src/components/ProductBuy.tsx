@@ -5,6 +5,7 @@ import Link from "next/link";
 import { formatMoney } from "@/lib/format";
 import type { Product } from "@/lib/types";
 import { MAX_QTY, useCart } from "./CartProvider";
+import { Lightbox } from "./Lightbox";
 
 export function ProductBuy({ product }: { product: Product }) {
   const { add } = useCart();
@@ -29,14 +30,14 @@ export function ProductBuy({ product }: { product: Product }) {
   const sizeAvailable = (s: string) => forColor(color).some((v) => v.size === s && v.available);
   const colorAvailable = (c: string) => product.variants.some((v) => v.color === c && v.available);
 
-  // Pictures for the chosen color first, then the rest of the product's pictures.
+  // Main picture first (our lead photo, or the chosen color's mockup), then the rest.
   const lead = variant ?? forColor(color)[0];
-  const gallery = [
-    ...new Set([lead?.image, ...product.photos, ...(lead?.images ?? []), product.image, ...product.images]),
-  ].filter(
-    (u): u is string => !!u,
-  );
+  const ordered = product.photosLead
+    ? [...product.photos, lead?.image, ...(lead?.images ?? []), ...product.images]
+    : [lead?.image, ...product.photos, ...(lead?.images ?? []), product.image, ...product.images];
+  const gallery = [...new Set(ordered)].filter((u): u is string => !!u);
   const [shown, setShown] = useState(0);
+  const [zoomed, setZoomed] = useState(false);
   const image = gallery[Math.min(shown, gallery.length - 1)] ?? null;
   const price = variant?.price ?? Math.min(...forColor(color).map((v) => v.price));
 
@@ -50,9 +51,25 @@ export function ProductBuy({ product }: { product: Product }) {
   return (
     <div className="product">
       <div className="product-gallery">
-        <div className="product-media">
-          {image && <img src={image} alt={[product.name, color].filter(Boolean).join(", ")} width={900} height={900} />}
-        </div>
+        {image && (
+          <button
+            type="button"
+            className="product-media"
+            aria-label={`View ${product.name} photo larger`}
+            onClick={() => setZoomed(true)}
+          >
+            <img src={image} alt={[product.name, color].filter(Boolean).join(", ")} width={900} height={900} />
+          </button>
+        )}
+        {zoomed && image && (
+          <Lightbox
+            images={gallery}
+            index={Math.min(shown, gallery.length - 1)}
+            alt={product.name}
+            onIndex={setShown}
+            onClose={() => setZoomed(false)}
+          />
+        )}
         {gallery.length > 1 && (
           <div className="thumbs" role="group" aria-label="Product photos">
             {gallery.map((src, i) => (
