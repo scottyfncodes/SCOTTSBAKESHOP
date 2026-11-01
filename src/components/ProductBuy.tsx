@@ -241,11 +241,26 @@ export function ProductBuy({ product, shipTo }: { product: Product; shipTo: stri
         <p className="pdp-assure">Printed to order for you, then shipped. Shipping is calculated at checkout.</p>
 
         <div className="pdp-details">
-          {product.description && (
+          {merch.details ? (
             <details open>
               <summary>Product details</summary>
-              <div className="description">{product.description}</div>
+              <div className="description">
+                <p>{merch.details.intro}</p>
+                <ul className="spec-list">
+                  {merch.details.specs.map((spec) => (
+                    <li key={spec}>{spec}</li>
+                  ))}
+                </ul>
+                {merch.details.note && <p className="spec-note">{merch.details.note}</p>}
+              </div>
             </details>
+          ) : (
+            product.description && (
+              <details open>
+                <summary>Product details</summary>
+                <div className="description">{product.description}</div>
+              </details>
+            )
           )}
           <details>
             <summary>Shipping &amp; fulfillment</summary>

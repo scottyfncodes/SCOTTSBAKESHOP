@@ -23,7 +23,16 @@ describe("merchFor", () => {
     expect(merchFor("Bubble-free stickers")).toMatchObject({ title: "Bake Shop Sticker", category: "Accessories", designs: [] });
   });
 
+  it("has our own product details for every live product, with no em dashes", () => {
+    for (const name of ["T-Shirt - Black", "Unisex Hoodie", "Hat", "Black Glossy Mug", "Let's Get This Bread Sticker", "Gluten for Punishment Sticker"]) {
+      const d = merchFor(name).details;
+      expect(d, name).not.toBeNull();
+      expect(JSON.stringify(d)).not.toContain("\u2014");
+    }
+    expect(merchFor("Unisex Hoodie").details?.note).toMatch(/size up/i);
+  });
+
   it("falls back to the Printful name for products it doesn't know", () => {
-    expect(merchFor("Tote Bag")).toEqual({ title: "Tote Bag", kind: null, category: null, designs: [], note: null });
+    expect(merchFor("Tote Bag")).toEqual({ title: "Tote Bag", kind: null, category: null, designs: [], note: null, details: null });
   });
 });
