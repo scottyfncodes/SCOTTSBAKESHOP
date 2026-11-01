@@ -153,3 +153,25 @@ describe("loadProduct", () => {
     expect((await loadProduct("1001", false, client))?.id).toBe(1001);
   });
 });
+
+describe("dropDuplicateListings", () => {
+  it("hides an exact duplicate listing and keeps the first", async () => {
+    const { dropDuplicateListings } = await import("@/lib/display-order");
+    const v = [{ color: "White", size: "4″×4″", price: 299 }];
+    const out = dropDuplicateListings([
+      { id: 1, name: "Bubble-free stickers", variants: v },
+      { id: 2, name: "Bubble-free stickers", variants: [...v] },
+    ]);
+    expect(out.map((p) => p.id)).toEqual([1]);
+  });
+
+  it("keeps listings that differ in color, size or price", async () => {
+    const { dropDuplicateListings } = await import("@/lib/display-order");
+    const out = dropDuplicateListings([
+      { id: 1, name: "T-Shirt", variants: [{ color: "Black", size: "M", price: 2900 }] },
+      { id: 2, name: "T-Shirt", variants: [{ color: "White", size: "M", price: 2900 }] },
+      { id: 3, name: "T-Shirt", variants: [{ color: "Black", size: "M", price: 3100 }] },
+    ]);
+    expect(out.map((p) => p.id)).toEqual([1, 2, 3]);
+  });
+});

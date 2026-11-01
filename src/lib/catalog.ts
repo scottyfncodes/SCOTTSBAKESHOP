@@ -1,6 +1,6 @@
 import "server-only";
 import { env } from "./env";
-import { sortForShelf } from "./display-order";
+import { dropDuplicateListings, sortForShelf } from "./display-order";
 import { extraPhotosFor } from "./extra-photos";
 import {
   printful,
@@ -168,7 +168,7 @@ export async function getCatalog({ fresh = false } = {}): Promise<Catalog> {
   try {
     const ids = await resolveProductIds(printful, env.printfulProductIds(), revalidate);
     const products = await Promise.all(ids.map((id) => loadProduct(id, revalidate)));
-    const found = products.filter((p): p is Product => p !== null);
+    const found = dropDuplicateListings(products.filter((p): p is Product => p !== null));
     // PRINTFUL_PRODUCT_IDS, when set, is already the chosen order.
     return { status: "ok", products: env.printfulProductIds().length ? found : sortForShelf(found) };
   } catch (err) {
