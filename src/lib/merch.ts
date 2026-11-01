@@ -114,10 +114,12 @@ const RULES: Rule[] = [
     kind: "Dad Hat",
     category: "Headwear",
     designs: ["lets-get-this-bread"],
-    note: "Kurt\u2019s hand-made Let\u2019s Get This Bread lettering across the front of a classic dad hat. Adjustable strap in the back, ready for the early shift.",
+    title: "Let\u2019s Get This Bread Embroidered Dad Hat",
+    note: "Kurt\u2019s hand-made Let\u2019s Get This Bread lettering, embroidered across the front of a classic dad hat. Adjustable strap in the back, ready for the early shift.",
     details: {
-      intro: "A low-profile dad hat with a curved visor. One size, adjustable.",
+      intro: "A low-profile dad hat with the lettering embroidered on the front and a curved visor. One size, adjustable.",
       specs: [
+        "Embroidered front design",
         "100% chino cotton twill",
         "Unstructured, 6-panel, low profile",
         "3\u215b\u2033 (7.6 cm) crown",

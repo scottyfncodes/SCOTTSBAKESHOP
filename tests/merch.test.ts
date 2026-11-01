@@ -5,7 +5,7 @@ describe("merchFor", () => {
   it("gives the live Printful products a storefront title, collection and design", () => {
     expect(merchFor("T-Shirt - Black")).toMatchObject({ title: "Gluten for Punishment Tee", category: "Apparel" });
     expect(merchFor("Unisex Hoodie")).toMatchObject({ title: "Gluten for Punishment Hoodie", category: "Apparel" });
-    expect(merchFor("Hat")).toMatchObject({ title: "Let’s Get This Bread Dad Hat", category: "Headwear" });
+    expect(merchFor("Hat")).toMatchObject({ title: "Let’s Get This Bread Embroidered Dad Hat", category: "Headwear" });
     const mug = merchFor("Black Glossy Mug");
     expect(mug).toMatchObject({ title: "Two-Sided Bake Shop Mug", category: "Accessories" });
     expect(mug.designs.map((d) => d.slug)).toEqual(["lets-get-this-bread", "gluten-for-punishment"]);
