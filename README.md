@@ -8,7 +8,7 @@ this domain, and sends paid orders to **Printful** for fulfillment.
 
 | Concern | Handled by |
 | --- | --- |
-| Products, variants, images, prices | Printful sync products listed in `PRINTFUL_PRODUCT_IDS`, read live (5-min cache) |
+| Products, variants, images, prices | Every synced Printful store product, or only those in `PRINTFUL_PRODUCT_IDS` if set; read live (5-min cache) |
 | Cart | Browser (localStorage); only variant IDs + quantities |
 | Price & availability checks | Server, re-priced from Printful on every checkout (`src/lib/pricing.ts`) |
 | Shipping | Live Printful rates for the exact items and address (`src/lib/shipping.ts`) |
@@ -26,8 +26,10 @@ Paid orders arrive in Printful as **drafts** unless `PRINTFUL_AUTO_CONFIRM=true`
 ## Setup
 
 1. `npm ci`, copy `.env.example` to `.env.local` and fill it in.
-2. `npm run printful:products` lists your existing Printful products. Put the
-   hoodie, T-shirt and hat IDs in `PRINTFUL_PRODUCT_IDS` (display order).
+2. Optional: the shop sells every synced, non-ignored product in the Printful
+   store. To pick a subset or set the order, run `npm run printful:products`
+   and put those IDs in `PRINTFUL_PRODUCT_IDS` (display order). The number in a
+   Printful dashboard "product template" URL is a template ID and won't work.
 3. In Stripe, add a webhook endpoint `https://scottsbakeshop.com/api/webhooks/stripe`
    for `checkout.session.completed` and `checkout.session.async_payment_succeeded`;
    put its signing secret in `STRIPE_WEBHOOK_SECRET`.

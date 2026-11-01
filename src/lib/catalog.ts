@@ -4,6 +4,7 @@ import {
   printful,
   PrintfulNotConfigured,
   type PfCatalogProduct,
+  type PrintfulClient,
   type PfSyncProduct,
   type PfSyncVariant,
 } from "./printful";
@@ -97,14 +98,29 @@ async function loadProduct(id: string, revalidate: number | false): Promise<Prod
 }
 
 /**
- * Loads the configured Printful products. `fresh` bypasses the cache — used
+ * The products to sell: PRINTFUL_PRODUCT_IDS when set (in that order),
+ * otherwise every synced, non-ignored product in the Printful store.
+ */
+export async function resolveProductIds(
+  client: Pick<PrintfulClient, "listStoreProducts">,
+  configured: string[],
+  revalidate: number | false,
+): Promise<string[]> {
+  if (configured.length > 0) return configured;
+  const all = await client.listStoreProducts(revalidate);
+  return all.filter((p) => !p.is_ignored && p.synced > 0).map((p) => String(p.id));
+}
+
+/**
+ * Loads the Printful products for sale. `fresh` bypasses the cache — used
  * when pricing a checkout so a stale page can never set the charge amount.
  */
 export async function getCatalog({ fresh = false } = {}): Promise<Catalog> {
-  const ids = env.printfulProductIds();
-  if (!env.printfulToken() || ids.length === 0) return { status: "unconfigured" };
+  if (!env.printfulToken()) return { status: "unconfigured" };
+  const revalidate = fresh ? false : REVALIDATE_SECONDS;
   try {
-    const products = await Promise.all(ids.map((id) => loadProduct(id, fresh ? false : REVALIDATE_SECONDS)));
+    const ids = await resolveProductIds(printful, env.printfulProductIds(), revalidate);
+    const products = await Promise.all(ids.map((id) => loadProduct(id, revalidate)));
     return { status: "ok", products: products.filter((p): p is Product => p !== null) };
   } catch (err) {
     if (err instanceof PrintfulNotConfigured) return { status: "unconfigured" };

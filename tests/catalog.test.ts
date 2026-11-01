@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { normalizeProduct, toCents } from "@/lib/catalog";
+import { describe, expect, it, vi } from "vitest";
+import { normalizeProduct, resolveProductIds, toCents } from "@/lib/catalog";
 import { hatCatalog, hatSync, teeCatalog, teeSync } from "./fixtures";
 
 describe("normalizeProduct", () => {
@@ -44,5 +44,26 @@ describe("normalizeProduct", () => {
     expect(toCents("0")).toBe(0);
     expect(toCents("abc")).toBe(0);
     expect(toCents(null)).toBe(0);
+  });
+});
+
+describe("resolveProductIds", () => {
+  const store = [
+    { id: 11, name: "Hoodie", thumbnail_url: null, variants: 5, synced: 5 },
+    { id: 12, name: "Old mug", thumbnail_url: null, variants: 1, synced: 1, is_ignored: true },
+    { id: 13, name: "Draft tee", thumbnail_url: null, variants: 4, synced: 0 },
+    { id: 14, name: "Hat", thumbnail_url: null, variants: 2, synced: 2 },
+  ];
+  const client = { listStoreProducts: vi.fn(async () => store) };
+
+  it("uses PRINTFUL_PRODUCT_IDS as given when set, without listing the store", async () => {
+    client.listStoreProducts.mockClear();
+    expect(await resolveProductIds(client, ["14", "11"], 300)).toEqual(["14", "11"]);
+    expect(client.listStoreProducts).not.toHaveBeenCalled();
+  });
+
+  it("otherwise sells every synced, non-ignored store product in store order", async () => {
+    expect(await resolveProductIds(client, [], 300)).toEqual(["11", "14"]);
+    expect(client.listStoreProducts).toHaveBeenCalledWith(300);
   });
 });
