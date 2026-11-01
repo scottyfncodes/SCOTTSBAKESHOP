@@ -289,6 +289,7 @@ button, input, select { font: inherit; color: inherit; }
 .artist-credit a:hover { color: var(--ink); text-decoration-thickness: 2px; }
 .design .artist-credit { margin: -4px 0 12px; }
 .pdp-solo { margin: 20px 0 0; }
+.pdp-solo + .pdp-solo { margin-top: 6px; }
 .pdp-solo span, .option-group legend span { font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.95rem; color: var(--ink-soft); }
 .option-group { border: 0; padding: 0; margin: 20px 0 0; min-width: 0; scroll-margin: 90px 0 140px; }
 .option-group legend { margin-bottom: 10px; padding: 0; }
