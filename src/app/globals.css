@@ -133,7 +133,7 @@ h1, h2, h3, .brand-name, .footer-wordmark {
   border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); font-size: 0.92rem;
 }
 @media (max-width: 899px) { .hero-dateline { margin-bottom: 18px; } }
-.hero-title { font-size: clamp(3.2rem, 15.2vw, 7rem); line-height: 0.86; letter-spacing: -0.04em; margin: 0 0 16px; }
+.hero-title { font-size: clamp(3.2rem, 15.2vw, 7rem); line-height: 0.98; letter-spacing: -0.04em; margin: 0 0 16px; }
 .hero-title em { letter-spacing: -0.045em; }
 .hero-sub { max-width: 30ch; margin: 0 0 20px; font-size: 1.1rem; line-height: 1.42; }
 .hero .btn { min-width: 220px; }
@@ -242,7 +242,7 @@ h1, h2, h3, .brand-name, .footer-wordmark {
 .story-inner { display: grid; gap: 24px; }
 .story-head { position: relative; padding-right: 84px; }
 .story .label { margin: 0 0 12px; color: var(--blue-deep); font-size: 0.98rem; }
-.story h2 { font-size: clamp(3rem, 14vw, 5.8rem); line-height: 0.88; letter-spacing: -0.04em; margin: 0; max-width: 7ch; }
+.story h2 { font-size: clamp(3rem, 14vw, 5.8rem); line-height: 0.98; letter-spacing: -0.04em; margin: 0; max-width: 7ch; }
 .story-stamp { position: absolute; top: 0; right: 0; width: 76px; height: 76px; transform: rotate(-9deg); }
 .story-body p { margin: 0 0 14px; font-size: 1.14rem; line-height: 1.6; max-width: 34em; }
 .story-body p:last-child { margin-bottom: 0; color: var(--ink-soft); }
