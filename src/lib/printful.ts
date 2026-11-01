@@ -140,8 +140,8 @@ export interface PfOrder {
 // ---- Calls ---------------------------------------------------------------
 
 export const printful = {
-  listStoreProducts: () =>
-    printfulFetch<PfSyncProductSummary[]>("/store/products?limit=100", { revalidate: false }),
+  listStoreProducts: (revalidate: number | false = false) =>
+    printfulFetch<PfSyncProductSummary[]>("/store/products?limit=100", { revalidate }),
   getStoreProduct: (id: string | number, revalidate: number | false) =>
     printfulFetch<PfSyncProduct>(`/store/products/${id}`, { revalidate }),
   getCatalogProduct: (id: number, revalidate: number | false) =>
