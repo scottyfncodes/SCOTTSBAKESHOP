@@ -295,6 +295,10 @@ button.product-media:focus-visible { outline: 3px solid var(--ink); outline-offs
 .site-footer li a { display: inline-flex; align-items: center; min-height: 40px; text-decoration: none; }
 .site-footer li a:hover { text-decoration: underline; }
 .footer-fine { margin-top: 28px; padding-top: 18px; border-top: 1px solid #3a3833; font-size: 0.85rem; color: #b9b5a6; }
+.footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; }
+.footer-bottom p { margin: 0; }
+.footer-bottom a { color: var(--paper); text-underline-offset: 3px; }
+.footer-bottom a:hover { text-decoration-thickness: 2px; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation-duration: 0.01ms !important; scroll-behavior: auto !important; }
