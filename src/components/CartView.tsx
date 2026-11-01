@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { formatMoney } from "@/lib/format";
+import { lineImage, merchFor } from "@/lib/merch";
 import type { Product, Variant } from "@/lib/types";
 import { MAX_QTY, useCart } from "./CartProvider";
 
@@ -45,14 +46,14 @@ export function CartView({ products }: { products: Product[] }) {
       <ul className="cart-lines" aria-label="Cart items">
         {resolved.map(({ line, match }) => (
           <li key={line.variantId} className="cart-line">
-            {match?.variant.image ? (
-              <img src={match.variant.image} alt="" width={88} height={88} />
+            {match && lineImage(match.product, match.variant) ? (
+              <img src={lineImage(match.product, match.variant)!} alt="" width={88} height={88} />
             ) : (
               <div className="thumb-placeholder" aria-hidden="true" />
             )}
             <div>
               <h3>
-                {match ? <Link href={`/products/${match.product.id}`}>{match.product.name}</Link> : "Item no longer available"}
+                {match ? <Link href={`/products/${match.product.id}`}>{merchFor(match.product.name).title}</Link> : "Item no longer available"}
               </h3>
               <p className="opts">
                 {match ? optionText(match.variant) || " " : "Please remove this item."}
@@ -60,7 +61,7 @@ export function CartView({ products }: { products: Product[] }) {
               </p>
               <div className="cart-line-controls">
                 {match?.variant.available ? (
-                  <div className="stepper" aria-label={`Quantity for ${match.product.name}`}>
+                  <div className="stepper" aria-label={`Quantity for ${merchFor(match.product.name).title}`}>
                     <button type="button" aria-label="Decrease quantity" onClick={() => setQuantity(line.variantId, line.quantity - 1)}>−</button>
                     <output aria-live="polite">{line.quantity}</output>
                     <button type="button" aria-label="Increase quantity" disabled={line.quantity >= MAX_QTY} onClick={() => setQuantity(line.variantId, line.quantity + 1)}>+</button>

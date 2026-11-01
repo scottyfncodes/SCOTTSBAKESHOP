@@ -59,7 +59,7 @@ describe("normalizeProduct", () => {
 
   it("attaches our own photos by product name; the tee's back photo is its main picture", () => {
     const tee = normalizeProduct(teeSync, teeCatalog)!;
-    expect(tee.photos).toEqual(["/products/tee-back.jpg"]);
+    expect(tee.photos).toEqual(["/products/tee-back.jpg", "/products/tee-print.jpg"]);
     expect(tee.photosLead).toBe(true);
     expect(tee.image).toBe("/products/tee-back.jpg");
 
