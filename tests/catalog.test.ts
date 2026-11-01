@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { normalizeProduct, resolveProductIds, toCents } from "@/lib/catalog";
+import { sortForShelf } from "@/lib/display-order";
 import { hatCatalog, hatSync, teeCatalog, teeSync } from "./fixtures";
 
 describe("normalizeProduct", () => {
@@ -105,5 +106,19 @@ describe("resolveProductIds", () => {
   it("otherwise sells every synced, non-ignored store product in store order", async () => {
     expect(await resolveProductIds(client, [], 300)).toEqual(["11", "14"]);
     expect(client.listStoreProducts).toHaveBeenCalledWith(300);
+  });
+});
+
+describe("sortForShelf", () => {
+  it("orders tee, hat, mug, hoodie, then anything else in its original order", () => {
+    const names = ["Unisex Hoodie", "Black Glossy Mug", "Sticker", "Hat", "T-Shirt - Black", "Tote"];
+    expect(sortForShelf(names.map((name) => ({ name }))).map((p) => p.name)).toEqual([
+      "T-Shirt - Black",
+      "Hat",
+      "Black Glossy Mug",
+      "Unisex Hoodie",
+      "Sticker",
+      "Tote",
+    ]);
   });
 });

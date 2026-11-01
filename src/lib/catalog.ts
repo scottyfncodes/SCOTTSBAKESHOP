@@ -1,5 +1,6 @@
 import "server-only";
 import { env } from "./env";
+import { sortForShelf } from "./display-order";
 import { extraPhotosFor } from "./extra-photos";
 import {
   printful,
@@ -151,7 +152,9 @@ export async function getCatalog({ fresh = false } = {}): Promise<Catalog> {
   try {
     const ids = await resolveProductIds(printful, env.printfulProductIds(), revalidate);
     const products = await Promise.all(ids.map((id) => loadProduct(id, revalidate)));
-    return { status: "ok", products: products.filter((p): p is Product => p !== null) };
+    const found = products.filter((p): p is Product => p !== null);
+    // PRINTFUL_PRODUCT_IDS, when set, is already the chosen order.
+    return { status: "ok", products: env.printfulProductIds().length ? found : sortForShelf(found) };
   } catch (err) {
     if (err instanceof PrintfulNotConfigured) return { status: "unconfigured" };
     console.error("[catalog] failed to load Printful products:", (err as Error).message);
