@@ -26,8 +26,8 @@ export function Designs({ products }: { products: Product[] }) {
                 <img
                   src={design.detail}
                   alt={design.detailKind === "art" ? `${design.name}, original artwork` : `${design.name} artwork, close up`}
-                  width={design.detailKind === "art" ? 960 : 460}
-                  height={design.detailKind === "art" ? 1185 : 575}
+                  width={design.detailKind === "art" ? 800 : 460}
+                  height={design.detailKind === "art" ? 1000 : 575}
                   loading="lazy"
                 />
               </div>
