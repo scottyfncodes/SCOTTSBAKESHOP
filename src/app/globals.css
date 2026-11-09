@@ -398,6 +398,9 @@ h1, h2, h3, .brand-name, .footer-wordmark {
   .pdp-assure { margin-top: 20px; }
   /* Keep the fixed buy bar from covering the end of the page. */
   body:has(.sticky-buy) .site-footer { padding-bottom: calc(110px + env(safe-area-inset-bottom)); }
+  /* The bar grows while it shows a message (about 121 px at 320 px wide with the
+     two-line "Added to your cart"), so reserve more room only then. */
+  body:has(.sticky-buy .inline-msg:not(:empty)) .site-footer { padding-bottom: calc(140px + env(safe-area-inset-bottom)); }
 }
 .related { padding-bottom: 24px; }
 /* Sits under the product name, so it stays a size below the page's h1. */
@@ -513,4 +516,4 @@ h1, h2, h3, .brand-name, .footer-wordmark {
 :is(.btn, .filter, .chip, .stepper button, .nav-link, .cart-button, .back-link):active:not(:disabled):not([aria-disabled="true"]) {
   transform: translateY(1px);
 }
-:is(.brand, .card, .hero-feature, .pdp-slide, .thumb, .artist-credit a, .footer-bottom a, .site-footer li a):active { opacity: 0.78; }
+:is(.brand, .card, .hero-feature, .pdp-slide, .thumb, .artist-credit a, .footer-bottom a, .site-footer li a, .design-items a, .pdp-details summary):active { opacity: 0.78; }
