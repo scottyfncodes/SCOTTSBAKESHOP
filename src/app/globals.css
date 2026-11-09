@@ -83,6 +83,7 @@ h1, h2, h3, .brand-name, .footer-wordmark {
 .header-nav { display: flex; align-items: center; gap: 2px; }
 .nav-link { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; text-decoration: none; font-size: 1.05rem; border-radius: var(--radius); }
 .nav-link:hover { background: var(--cream-deep); }
+.brand:hover .brand-name { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 .nav-story { display: none; }
 .cart-button {
   position: relative; display: inline-flex; align-items: center; justify-content: center;
@@ -163,10 +164,10 @@ h1, h2, h3, .brand-name, .footer-wordmark {
 .section-count { margin: 0 0 0.35em; color: var(--ink-soft); white-space: nowrap; font-size: 0.98rem; }
 
 /* ---------- Collection filters ---------- */
-.filters { display: flex; gap: 6px; overflow-x: auto; margin: 0 calc(-1 * var(--gutter)) 18px; padding: 0 var(--gutter) 2px; scrollbar-width: none; }
+.filters { display: flex; gap: 8px; overflow-x: auto; margin: 0 calc(-1 * var(--gutter)) 18px; padding: 0 var(--gutter) 2px; scrollbar-width: none; }
 .filters::-webkit-scrollbar { display: none; }
 .filter {
-  flex: none; display: inline-flex; align-items: center; min-height: 42px; padding: 0 14px;
+  flex: none; display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px;
   border: 1px solid var(--line-strong); border-radius: 999px; background: transparent; cursor: pointer;
   font-size: 0.94rem;
 }
@@ -260,7 +261,7 @@ h1, h2, h3, .brand-name, .footer-wordmark {
 }
 
 /* ---------- Product page ---------- */
-.back-link { display: inline-flex; align-items: center; gap: 6px; min-height: 42px; margin-top: 0; text-decoration: none; font-size: 1rem; color: var(--ink-soft); }
+.back-link { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-top: 0; text-decoration: none; font-size: 1rem; color: var(--ink-soft); }
 .back-link:hover { color: var(--ink); }
 .product { display: grid; gap: 16px; padding: 0 0 40px; }
 .product > *, .cart-layout > * { min-width: 0; }
@@ -334,6 +335,8 @@ h1, h2, h3, .brand-name, .footer-wordmark {
 .pdp-note { margin: 16px 0 0; max-width: 40ch; font-size: 1.08rem; line-height: 1.5; }
 .artist-credit { margin: 8px 0 0; font-size: 0.98rem; color: var(--ink-soft); }
 .artist-credit a { color: var(--blue-deep); font-weight: 500; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+/* Inline links: pad the tap area to 44 px tall without moving the line. */
+.artist-credit a, .footer-bottom a { display: inline-block; padding-block: 13px; margin-block: -13px; }
 .artist-credit a:hover { color: var(--ink); text-decoration-thickness: 2px; }
 .design .artist-credit { margin: -4px 0 12px; }
 .pdp-solo { margin: 22px 0 0; font-size: 1rem; }
@@ -397,6 +400,8 @@ h1, h2, h3, .brand-name, .footer-wordmark {
   body:has(.sticky-buy) .site-footer { padding-bottom: calc(110px + env(safe-area-inset-bottom)); }
 }
 .related { padding-bottom: 24px; }
+/* Sits under the product name, so it stays a size below the page's h1. */
+.related .section-head h2 { font-size: clamp(1.9rem, 7.6vw, 3.2rem); }
 @media (min-width: 1000px) { .related .shelf { padding-bottom: 48px; } }
 
 /* ---------- Cart ---------- */
@@ -490,15 +495,22 @@ h1, h2, h3, .brand-name, .footer-wordmark {
 .footer-brand img { width: 56px; height: 56px; }
 .footer-tag { margin: 12px 0 0; font-size: 1rem; color: #cfcbbb; max-width: 36ch; }
 .site-footer h2 { font-size: 1rem; color: #b9b5a6; margin: 0 0 6px; }
-.site-footer ul { list-style: none; margin: 0; padding: 0; }
-.site-footer li a { display: inline-flex; align-items: center; min-height: 42px; text-decoration: none; font-size: 1.05rem; }
+.site-footer ul { list-style: none; margin: 0; padding: 0; display: grid; justify-items: start; gap: 8px; }
+.site-footer li a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; text-decoration: none; font-size: 1.05rem; }
 .site-footer li a:hover { text-decoration: underline; }
 .footer-fine { margin-top: 28px; padding-top: 18px; border-top: 1px solid #3a3833; font-size: 0.85rem; color: #b9b5a6; }
 .footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; }
 .footer-bottom p { margin: 0; }
 .footer-bottom a { color: var(--paper); text-underline-offset: 3px; }
-.footer-bottom a:hover { text-decoration-thickness: 2px; }
+.footer-bottom a:hover { color: var(--mustard); text-decoration-thickness: 2px; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
+
+/* ---------- Pressed states ----------
+   Touch screens have no hover, so a tap needs its own immediate answer. */
+:is(.btn, .filter, .chip, .stepper button, .nav-link, .cart-button, .back-link):active:not(:disabled):not([aria-disabled="true"]) {
+  transform: translateY(1px);
+}
+:is(.brand, .card, .hero-feature, .pdp-slide, .thumb, .artist-credit a, .footer-bottom a, .site-footer li a):active { opacity: 0.78; }
