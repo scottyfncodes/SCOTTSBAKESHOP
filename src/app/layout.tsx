@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
         </CartProvider>
         {/* HaveAnApp Pulse: anonymous, cookieless usage counts. */}
-        <Script src="https://haveanapp-pulse-collect.vercel.app/p.js" data-app="scottsbakeshop" strategy="afterInteractive" />
+        <Script src="https://haveanapp-pulse-collect.vercel.app/p.js" data-app="scottsbakeshop" data-returning="on" strategy="afterInteractive" />
       </body>
     </html>
   );
